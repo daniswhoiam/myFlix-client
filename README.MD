@@ -1,0 +1,1 @@
+This is the code for the client-side of the myFlix application, for which the necessary backend code (i.e. an API) was written in another repo.
