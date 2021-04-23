@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import './register-view.scss';
 
@@ -50,4 +51,9 @@ export function RegisterView(props) {
       <button type="button" onClick={handleSubmit}>Submit</button>
     </form>
   );
+}
+
+/* Ensure that props have the right form */
+RegisterView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired
 }

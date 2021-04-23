@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './movie-view.scss';
 
@@ -32,4 +33,26 @@ export class MovieView extends React.Component {
       </div>
     );
   }
+}
+
+/* Ensure that props have the right form */
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      Description: PropTypes.string
+    }).isRequired,
+    Director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      Description: PropTypes.string.isRequired,
+      Birth: PropTypes.instanceOf(Date).isRequired,
+      Death: PropTypes.instanceOf(Date)
+    }).isRequired,
+    ReleaseYear: PropTypes.number.isRequired,
+    Rating: PropTypes.number
+  }).isRequired,
+  onBackClick: PropTypes.func.isRequired
 }
