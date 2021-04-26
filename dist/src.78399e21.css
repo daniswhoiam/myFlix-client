@@ -1,3 +1,34 @@
+.form-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+Button[type=submit] {
+  width: 100%;
+  margin: 20px auto;
+}
+.form-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+Button[type=submit] {
+  width: 100%;
+  margin: 20px auto;
+}
+body {
+  min-height: 100vh;
+}
+
+.app-container, .container {
+  min-height: inherit;
+}
+
+.row, .col {
+  min-height: inherit;
+}
 .my-flix {
   color: steelblue;
 }

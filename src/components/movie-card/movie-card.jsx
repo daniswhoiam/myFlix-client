@@ -34,12 +34,12 @@ MovieCard.propTypes = {
     }).isRequired,
     Director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
-      Description: PropTypes.string.isRequired,
-      Birth: PropTypes.instanceOf(Date).isRequired,
-      Death: PropTypes.instanceOf(Date)
+      Bio: PropTypes.string.isRequired,
+      Birth: PropTypes.string.isRequired,
+      Death: PropTypes.string
     }).isRequired,
-    ReleaseYear: PropTypes.number.isRequired,
-    Rating: PropTypes.number
+    ReleaseYear: PropTypes.string.isRequired,
+    Rating: PropTypes.string
   }).isRequired,
   onMovieClick: PropTypes.func.isRequired
 }
