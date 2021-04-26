@@ -30,7 +30,7 @@ export function LoginView(props) {
   };
 
   /* If someone wants to register, display registration form. Also enable immediate log-in after valid registration. (Temporary Implementation) */
-  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} />;
+  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} setRegistration={setRegistration}/>;
 
   return (
     <Row>
@@ -46,7 +46,7 @@ export function LoginView(props) {
           </Form.Group>
           <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
         </Form>
-        <Button variant="outline-primary" onClick={() => setRegistration(true)}>No account yet? Click here to register</Button>
+        <Button variant="outline-secondary" onClick={() => setRegistration(true)}>No account yet? Click here to register</Button>
       </Col>
     </Row>
   );

@@ -34113,7 +34113,12 @@ function RegisterView(props) {
   })), /*#__PURE__*/_react.default.createElement(_Button.default, {
     type: "submit",
     onClick: handleSubmit
-  }, "Submit"))));
+  }, "Submit")), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    variant: "outline-secondary",
+    onClick: function onClick() {
+      return props.setRegistration(false);
+    }
+  }, "Back to Log-In")));
 }
 /* Ensure that props have the right form */
 
@@ -34202,7 +34207,8 @@ function LoginView(props) {
 
 
   if (registration) return /*#__PURE__*/_react.default.createElement(_registerView.RegisterView, {
-    onLoggedIn: props.onLoggedIn
+    onLoggedIn: props.onLoggedIn,
+    setRegistration: setRegistration
   });
   return /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
     className: "form-holder"
@@ -34225,7 +34231,7 @@ function LoginView(props) {
     type: "submit",
     onClick: handleSubmit
   }, "Submit")), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    variant: "outline-primary",
+    variant: "outline-secondary",
     onClick: function onClick() {
       return setRegistration(true);
     }

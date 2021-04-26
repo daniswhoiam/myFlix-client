@@ -57,6 +57,7 @@ export function RegisterView(props) {
           </Form.Group>
           <Button type="submit" onClick={handleSubmit}>Submit</Button>
         </Form>
+        <Button variant="outline-secondary" onClick={() => props.setRegistration(false)}>Back to Log-In</Button>
       </Col>
     </Row>
    
