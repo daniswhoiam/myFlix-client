@@ -18,10 +18,19 @@ Button[type=submit] {
   width: 100%;
   margin: 20px auto;
 }
-body {
-  min-height: 100vh;
+.btn-link {
+  padding-left: 0;
 }
 
+.card-body {
+  min-height: 300px;
+}
+
+.movie-view-link {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
 .app-container, .container {
   min-height: inherit;
 }
@@ -29,8 +38,32 @@ body {
 .row, .col {
   min-height: inherit;
 }
-.my-flix {
-  color: steelblue;
+
+.col-md-3 {
+  margin-bottom: 50px;
+}
+body {
+  min-height: 100vh;
+  font-family: "Roboto";
+}
+
+.btn-link, .btn-link:hover {
+  color: #850742;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active {
+  background-color: #850742;
+  border-color: #850742;
+}
+
+.btn-outline-secondary {
+  color: #850907;
+  border-color: #850907;
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:active {
+  background-color: #850907;
+  border-color: #850907;
 }
 
 /*# sourceMappingURL=/src.78399e21.css.map */

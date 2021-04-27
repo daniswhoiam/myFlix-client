@@ -34478,25 +34478,57 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(MovieCard);
 
   function MovieCard() {
+    var _this;
+
     _classCallCheck(this, MovieCard);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this);
+    _this.state = {
+      readMore: false,
+      maxTextLength: 100
+    };
+    return _this;
   }
 
   _createClass(MovieCard, [{
+    key: "setReadMore",
+    value: function setReadMore(bool) {
+      this.setState({
+        readMore: bool
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var _this$props = this.props,
           movie = _this$props.movie,
           onMovieClick = _this$props.onMovieClick;
+      var _this$state = this.state,
+          readMore = _this$state.readMore,
+          maxTextLength = _this$state.maxTextLength;
       return /*#__PURE__*/_react.default.createElement(_Card.default, null, /*#__PURE__*/_react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.ImagePath
-      }), /*#__PURE__*/_react.default.createElement(_Card.default.Body, null, /*#__PURE__*/_react.default.createElement(_Card.default.Title, null, movie.Title), /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description), /*#__PURE__*/_react.default.createElement(_Button.default, {
+      }), /*#__PURE__*/_react.default.createElement(_Card.default.Body, null, /*#__PURE__*/_react.default.createElement(_Card.default.Title, null, movie.Title), readMore ? /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+        type: "button",
+        variant: "link",
+        onClick: function onClick() {
+          return _this2.setReadMore(false);
+        }
+      }, "Read Less <<")) : /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description.substr(0, maxTextLength).concat('...'), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+        type: "button",
+        variant: "link",
+        onClick: function onClick() {
+          return _this2.setReadMore(true);
+        }
+      }, "Read more >>")), /*#__PURE__*/_react.default.createElement(_Button.default, {
+        className: "movie-view-link",
         onClick: function onClick() {
           return onMovieClick(movie);
         },
-        variant: "link"
+        variant: "primary"
       }, "Open")));
     }
   }]);
@@ -34951,7 +34983,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55179" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50936" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
