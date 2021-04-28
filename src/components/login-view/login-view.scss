@@ -1,0 +1,10 @@
+.form-holder{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+Button[type="submit"] {
+  width: 100%;
+  margin: 20px auto;
+}

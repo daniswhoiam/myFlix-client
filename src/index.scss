@@ -1,5 +1,11 @@
-$color: steelblue;
+@import "~bootstrap/scss/bootstrap";
+@import "./src/scss/custom";
 
-.my-flix {
-  color: $color;
+$tertiary-color: #850781;
+
+$primary-font: 'Roboto';
+
+body {
+  min-height: 100vh;
+  font-family: $primary-font;
 }

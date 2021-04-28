@@ -1,6 +1,11 @@
+/* Import from packages */
 import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import './register-view.scss';
 
@@ -31,25 +36,31 @@ export function RegisterView(props) {
   }
 
   return (
-    <form>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-      </label>
-      <label >
-        Password:
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      </label>
-      <label>
-        E-Mail Address:
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)}/>
-      </label>
-      <label>
-        Date of Birth:
-        <input type="date" value={birthday} onChange={e => setBirthday(e.target.value)}/>
-      </label>
-      <button type="button" onClick={handleSubmit}>Submit</button>
-    </form>
+    <Row>
+      <Col className="form-holder">
+        <Form>
+          <Form.Group controlId="formUsername">
+            <Form.Label>Username:</Form.Label>
+            <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+          </Form.Group>
+          <Form.Group controlId="formPassword">
+            <Form.Label>Password:</Form.Label>
+            <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>E-Mail Address:</Form.Label>
+            <Form.Control type="email" onChange={e => setEmail(e.target.value)} />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Date of Birth:</Form.Label>
+            <Form.Control type="date" onChange={e => setBirthday(e.target.value)} />
+          </Form.Group>
+          <Button type="submit" onClick={handleSubmit}>Submit</Button>
+        </Form>
+        <Button variant="outline-secondary" onClick={() => props.setRegistration(false)}>Back to Log-In</Button>
+      </Col>
+    </Row>
+   
   );
 }
 

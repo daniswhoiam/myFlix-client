@@ -1,7 +1,15 @@
+/* Import from packages */
 import React, { useState } from 'react';
-import { RegisterView } from '../register-view/register-view';
 import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
+/* Import own views */
+import { RegisterView } from '../register-view/register-view';
+
+/* Import SCSS */
 import './login-view.scss';
 
 export function LoginView(props) {
@@ -22,23 +30,25 @@ export function LoginView(props) {
   };
 
   /* If someone wants to register, display registration form. Also enable immediate log-in after valid registration. (Temporary Implementation) */
-  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} />;
+  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} setRegistration={setRegistration}/>;
 
   return (
-    <>
-      <form>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-        </label>
-        <label >
-          Password:
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        </label>
-        <button type="button" onClick={handleSubmit}>Submit</button>
-      </form>
-      <button onClick={() => setRegistration(true)}>No account yet? Click here to register</button>
-    </>
+    <Row>
+      <Col className="form-holder">
+        <Form>
+          <Form.Group controlId="formUsername">
+            <Form.Label>Username:</Form.Label>
+            <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+          </Form.Group>
+          <Form.Group controlId="formPassword">
+            <Form.Label>Password:</Form.Label>
+            <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+          </Form.Group>
+          <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
+        </Form>
+        <Button variant="outline-secondary" onClick={() => setRegistration(true)}>No account yet? Click here to register</Button>
+      </Col>
+    </Row>
   );
 }
 
