@@ -1,5 +1,6 @@
-$primary-color: #850742;
-$secondary-color: #850907;
+@import "~bootstrap/scss/bootstrap";
+@import "./src/scss/custom";
+
 $tertiary-color: #850781;
 
 $primary-font: 'Roboto';
@@ -7,23 +8,4 @@ $primary-font: 'Roboto';
 body {
   min-height: 100vh;
   font-family: $primary-font;
-}
-
-.btn-link, .btn-link:hover {
-  color: $primary-color;
-}
-
-.btn-primary, .btn-primary:hover, .btn-primary:active {
-  background-color: $primary-color;
-  border-color: $primary-color;
-}
-
-.btn-outline-secondary {
-  color: $secondary-color;
-  border-color: $secondary-color;
-}
-
-.btn-outline-secondary:hover, .btn-outline-secondary:active {
-  background-color: $secondary-color;
-  border-color: $secondary-color;
 }
