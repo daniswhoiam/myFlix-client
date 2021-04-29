@@ -11,6 +11,7 @@ import { RegisterView } from '../register-view/register-view';
 
 /* Import SCSS */
 import './login-view.scss';
+import axios from 'axios';
 
 export function LoginView(props) {
   /* Initialize necessary state variables  */
@@ -22,15 +23,22 @@ export function LoginView(props) {
   /* Function for sending the credentials to verify */
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password);
     /* Send a request to the server for authentication */
-    /* then call this.props.onLoggedIn(username) */
-    /* Temporary solution */
-    props.onLoggedIn(username);
+    axios.post('https://daniswhoiam-myflix.herokuapp.com/login', {
+      Username: username,
+      Password: password
+    })
+      .then(response => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch(() => {
+        console.log('Something went wrong with the log-in.');
+      });
   };
 
   /* If someone wants to register, display registration form. Also enable immediate log-in after valid registration. (Temporary Implementation) */
-  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} setRegistration={setRegistration}/>;
+  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} setRegistration={setRegistration} />;
 
   return (
     <Row>
