@@ -37511,6 +37511,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _axios = _interopRequireDefault(require("axios"));
+
 var _reactRouterDom = require("react-router-dom");
 
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
@@ -37556,12 +37558,25 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this);
     _this.state = {
       readMore: false,
-      maxTextLength: 100
+      maxTextLength: 100,
+      favorited: false
     };
     return _this;
   }
 
   _createClass(MovieCard, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var favoriteMovies = JSON.parse(localStorage.getItem('userdata')).FavoriteMovies;
+
+      if (favoriteMovies) {
+        var favoritedState = favoriteMovies.includes(this.props.movie._id);
+        this.setState({
+          favorited: favoritedState
+        });
+      }
+    }
+  }, {
     key: "setReadMore",
     value: function setReadMore(bool) {
       this.setState({
@@ -37569,14 +37584,51 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "toggleFavoriteMovie",
+    value: function toggleFavoriteMovie(currentState) {
+      var _this2 = this;
+
+      if (currentState) {
+        _axios.default.delete("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(this.props.movie._id), {
+          headers: {
+            Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          }
+        }).then(function (res) {
+          console.log(res);
+          localStorage.setItem('userdata', JSON.stringify(res.data));
+
+          _this2.setState({
+            favorited: false
+          });
+        }).catch(function (err) {
+          console.log(err);
+        });
+      } else {
+        _axios.default.patch("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(this.props.movie._id), {}, {
+          headers: {
+            Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          }
+        }).then(function (res) {
+          localStorage.setItem('userdata', JSON.stringify(res.data));
+
+          _this2.setState({
+            favorited: true
+          });
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var movie = this.props.movie;
       var _this$state = this.state,
           readMore = _this$state.readMore,
-          maxTextLength = _this$state.maxTextLength;
+          maxTextLength = _this$state.maxTextLength,
+          favorited = _this$state.favorited;
       return /*#__PURE__*/_react.default.createElement(_Card.default, null, /*#__PURE__*/_react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.ImagePath
@@ -37584,20 +37636,40 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
         type: "button",
         variant: "link",
         onClick: function onClick() {
-          return _this2.setReadMore(false);
+          return _this3.setReadMore(false);
         }
       }, "Read Less <<")) : /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description.substr(0, maxTextLength).concat('...'), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
         type: "button",
         variant: "link",
         onClick: function onClick() {
-          return _this2.setReadMore(true);
+          return _this3.setReadMore(true);
         }
       }, "Read more >>")), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
         to: "/movies/".concat(movie._id)
       }, /*#__PURE__*/_react.default.createElement(_Button.default, {
         className: "movie-view-link",
         variant: "primary"
-      }, "Open"))));
+      }, "Open")), favorited ? /*#__PURE__*/_react.default.createElement("div", {
+        className: "starOn",
+        onClick: function onClick() {
+          return _this3.toggleFavoriteMovie(true);
+        }
+      }, /*#__PURE__*/_react.default.createElement("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        version: "1.1"
+      }, /*#__PURE__*/_react.default.createElement("polygon", {
+        points: "12,3 6,21 21,9 3,9 18,21"
+      }))) : /*#__PURE__*/_react.default.createElement("div", {
+        className: "starOff",
+        onClick: function onClick() {
+          return _this3.toggleFavoriteMovie(false);
+        }
+      }, /*#__PURE__*/_react.default.createElement("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        version: "1.1"
+      }, /*#__PURE__*/_react.default.createElement("polygon", {
+        points: "12,3 6,21 21,9 3,9 18,21"
+      })))));
     }
   }]);
 
@@ -37626,7 +37698,7 @@ MovieCard.propTypes = {
     Rating: _propTypes.default.string
   }).isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","./movie-card.scss":"components/movie-card/movie-card.scss"}],"components/movie-view/movie-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","./movie-card.scss":"components/movie-card/movie-card.scss"}],"components/movie-view/movie-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -40931,11 +41003,7 @@ exports.ProfileView = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
 var _axios = _interopRequireDefault(require("axios"));
-
-var _reactRouterDom = require("react-router-dom");
 
 var _Row = _interopRequireDefault(require("react-bootstrap/Row"));
 
@@ -41124,7 +41192,7 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
 }(_react.default.Component);
 
 exports.ProfileView = ProfileView;
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);

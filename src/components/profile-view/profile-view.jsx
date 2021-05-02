@@ -1,9 +1,6 @@
 /* Import from packages */
 import React from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
-
-import { Link } from 'react-router-dom';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -40,9 +37,11 @@ export class ProfileView extends React.Component {
         Password: password,
         Email: email
       },
-      {headers: { 
-        Authorization: `Bearer ${localStorage.getItem('token')}` 
-      }}
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }
     )
       .then(res => {
         console.log('Successfully updated user data.');
@@ -55,23 +54,25 @@ export class ProfileView extends React.Component {
   deleteAccount() {
     axios.delete(
       `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}`,
-      {headers: { 
-        Authorization: `Bearer ${localStorage.getItem('token')}` 
-      }}
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }
     )
-    .then(res => {
-      localStorage.clear();
-      window.location.href="/";
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(res => {
+        localStorage.clear();
+        window.location.href = "/";
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   updateUsername = e => this.setState({ newUsername: e });
   updatePassword = e => this.setState({ newPassword: e });
   updateEmail = e => this.setState({ newEmail: e });
-  closeModal = () => this.setState({ modal: false});
+  closeModal = () => this.setState({ modal: false });
 
   render() {
     const { newUsername, newEmail, birth, modal } = this.state;
@@ -106,7 +107,7 @@ export class ProfileView extends React.Component {
         </Row>
         <Row>
           <Col>
-            <Button variant="outline-primary" onClick={() => this.setState({ modal: true})}>Delete your account</Button>
+            <Button variant="outline-primary" onClick={() => this.setState({ modal: true })}>Delete your account</Button>
           </Col>
         </Row>
         {modal && <DeleteAccountModal closeModal={() => this.closeModal()} deleteAccount={() => this.deleteAccount()} />}
