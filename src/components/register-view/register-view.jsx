@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+
+import { Link } from 'react-router-dom';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -9,12 +12,12 @@ import Col from 'react-bootstrap/Col';
 
 import './register-view.scss';
 
-export function RegisterView(props) {
+export function RegisterView() {
   /* Initialize necessary state variables  */
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const [ email, setEmail ] = useState('');
-  const [ birthday, setBirthday ] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
 
   /* Function to send data to server to register */
   const handleSubmit = (e) => {
@@ -25,14 +28,13 @@ export function RegisterView(props) {
       Email: email,
       Birth: birthday
     })
-    .then(res => {
-      console.log(res);
-      /* Temporary Solution to log-in user immediately*/
-      props.onLoggedIn(res.data.Username);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(res => {
+        const data = res.data;
+        window.open('/', '_self');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   return (
@@ -57,14 +59,11 @@ export function RegisterView(props) {
           </Form.Group>
           <Button type="submit" onClick={handleSubmit}>Submit</Button>
         </Form>
-        <Button variant="outline-secondary" onClick={() => props.setRegistration(false)}>Back to Log-In</Button>
+        <Link to={"/"}>
+          <Button variant="outline-secondary">Back to Log-In</Button>
+        </Link>
       </Col>
     </Row>
-   
-  );
-}
 
-/* Ensure that props have the right form */
-RegisterView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired
+  );
 }

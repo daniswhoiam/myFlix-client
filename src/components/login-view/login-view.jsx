@@ -1,24 +1,22 @@
 /* Import from packages */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+
+import { Link } from 'react-router-dom';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-/* Import own views */
-import { RegisterView } from '../register-view/register-view';
-
 /* Import SCSS */
 import './login-view.scss';
-import axios from 'axios';
 
 export function LoginView(props) {
   /* Initialize necessary state variables  */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const [registration, setRegistration] = useState(false);
 
   /* Function for sending the credentials to verify */
   const handleSubmit = (e) => {
@@ -37,9 +35,6 @@ export function LoginView(props) {
       });
   };
 
-  /* If someone wants to register, display registration form. Also enable immediate log-in after valid registration. (Temporary Implementation) */
-  if (registration) return <RegisterView onLoggedIn={props.onLoggedIn} setRegistration={setRegistration} />;
-
   return (
     <Row>
       <Col className="form-holder">
@@ -54,7 +49,9 @@ export function LoginView(props) {
           </Form.Group>
           <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
         </Form>
-        <Button variant="outline-secondary" onClick={() => setRegistration(true)}>No account yet? Click here to register</Button>
+        <Link to="/register">
+          <Button variant="outline-secondary" >No account yet? Click here to register</Button>
+        </Link>
       </Col>
     </Row>
   );

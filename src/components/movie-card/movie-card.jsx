@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { Link } from 'react-router-dom';
+
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
@@ -22,7 +25,7 @@ export class MovieCard extends React.Component {
   }
 
   render() {
-    const { movie, onMovieClick } = this.props;
+    const { movie } = this.props;
     const { readMore, maxTextLength } = this.state;
 
     return (
@@ -44,7 +47,9 @@ export class MovieCard extends React.Component {
                 <Button type="button" variant="link" onClick={() => this.setReadMore(true)}>Read more &gt;&gt;</Button>
               </Card.Text>
           }
-          <Button className="movie-view-link" onClick={() => onMovieClick(movie)} variant="primary">Open</Button>
+          <Link to={`/movies/${movie._id}`}>
+            <Button className="movie-view-link" variant="primary">Open</Button>
+          </Link>
         </Card.Body>
       </Card>
     );
@@ -69,6 +74,5 @@ MovieCard.propTypes = {
     }).isRequired,
     ReleaseYear: PropTypes.string.isRequired,
     Rating: PropTypes.string
-  }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
+  }).isRequired
 }
