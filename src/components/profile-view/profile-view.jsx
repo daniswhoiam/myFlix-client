@@ -76,7 +76,10 @@ export function ProfileView() {
       }
     )
       .then(res => {
-        console.log('Successfully updated user data.');
+        localStorage.setItem('userdata', JSON.stringify(res.data));
+        localStorage.setItem('user', res.data.Username);
+        window.location.href = `/profile/${localStorage.getItem('user')}`;
+        alert('Successfully updated your data.');
       })
       .catch(err => {
         console.log(err);

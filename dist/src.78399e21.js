@@ -41185,7 +41185,10 @@ function ProfileView() {
         Authorization: "Bearer ".concat(localStorage.getItem('token'))
       }
     }).then(function (res) {
-      console.log('Successfully updated user data.');
+      localStorage.setItem('userdata', JSON.stringify(res.data));
+      localStorage.setItem('user', res.data.Username);
+      window.location.href = "/profile/".concat(localStorage.getItem('user'));
+      alert('Successfully updated your data.');
     }).catch(function (err) {
       console.log(err);
     });
