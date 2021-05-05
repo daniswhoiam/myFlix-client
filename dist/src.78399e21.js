@@ -41404,9 +41404,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "onLoggedOut",
     value: function onLoggedOut() {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('userdata');
+      localStorage.clear();
+      window.location.href = "/";
       this.setState({
         user: null
       });
