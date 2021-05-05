@@ -37940,7 +37940,82 @@ GenreView.propTypes = {
   }).isRequired,
   onBackClick: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./genre-view.scss":"components/genre-view/genre-view.scss"}],"../node_modules/dom-helpers/esm/canUseDOM.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./genre-view.scss":"components/genre-view/genre-view.scss"}],"../node_modules/react-bootstrap/esm/InputGroup.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _classnames = _interopRequireDefault(require("classnames"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _createWithBsPrefix = _interopRequireDefault(require("./createWithBsPrefix"));
+
+var _ThemeProvider = require("./ThemeProvider");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var InputGroupAppend = (0, _createWithBsPrefix.default)('input-group-append');
+var InputGroupPrepend = (0, _createWithBsPrefix.default)('input-group-prepend');
+var InputGroupText = (0, _createWithBsPrefix.default)('input-group-text', {
+  Component: 'span'
+});
+
+var InputGroupCheckbox = function InputGroupCheckbox(props) {
+  return /*#__PURE__*/_react.default.createElement(InputGroupText, null, /*#__PURE__*/_react.default.createElement("input", (0, _extends2.default)({
+    type: "checkbox"
+  }, props)));
+};
+
+var InputGroupRadio = function InputGroupRadio(props) {
+  return /*#__PURE__*/_react.default.createElement(InputGroupText, null, /*#__PURE__*/_react.default.createElement("input", (0, _extends2.default)({
+    type: "radio"
+  }, props)));
+};
+/**
+ *
+ * @property {InputGroupAppend} Append
+ * @property {InputGroupPrepend} Prepend
+ * @property {InputGroupText} Text
+ * @property {InputGroupRadio} Radio
+ * @property {InputGroupCheckbox} Checkbox
+ */
+
+
+var InputGroup = /*#__PURE__*/_react.default.forwardRef(function (_ref, ref) {
+  var bsPrefix = _ref.bsPrefix,
+      size = _ref.size,
+      hasValidation = _ref.hasValidation,
+      className = _ref.className,
+      _ref$as = _ref.as,
+      Component = _ref$as === void 0 ? 'div' : _ref$as,
+      props = (0, _objectWithoutPropertiesLoose2.default)(_ref, ["bsPrefix", "size", "hasValidation", "className", "as"]);
+  bsPrefix = (0, _ThemeProvider.useBootstrapPrefix)(bsPrefix, 'input-group');
+  return /*#__PURE__*/_react.default.createElement(Component, (0, _extends2.default)({
+    ref: ref
+  }, props, {
+    className: (0, _classnames.default)(className, bsPrefix, size && bsPrefix + "-" + size, hasValidation && 'has-validation')
+  }));
+});
+
+InputGroup.displayName = 'InputGroup';
+var InputGroupWithExtras = (0, _extends2.default)({}, InputGroup, {
+  Text: InputGroupText,
+  Radio: InputGroupRadio,
+  Checkbox: InputGroupCheckbox,
+  Append: InputGroupAppend,
+  Prepend: InputGroupPrepend
+});
+var _default = InputGroupWithExtras;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","classnames":"../node_modules/classnames/index.js","react":"../node_modules/react/index.js","./createWithBsPrefix":"../node_modules/react-bootstrap/esm/createWithBsPrefix.js","./ThemeProvider":"../node_modules/react-bootstrap/esm/ThemeProvider.js"}],"../node_modules/dom-helpers/esm/canUseDOM.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40999,9 +41074,9 @@ module.hot.accept(reloadCSS);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ProfileView = void 0;
+exports.ProfileView = ProfileView;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -41013,186 +41088,193 @@ var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
 var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 
+var _InputGroup = _interopRequireDefault(require("react-bootstrap/InputGroup"));
+
 var _deleteAccountModal = require("./delete-account-modal");
 
 require("./profile-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var ProfileView = /*#__PURE__*/function (_React$Component) {
-  _inherits(ProfileView, _React$Component);
+function ProfileView() {
+  var _useState = (0, _react.useState)({}),
+      _useState2 = _slicedToArray(_useState, 2),
+      form = _useState2[0],
+      setForm = _useState2[1];
 
-  var _super = _createSuper(ProfileView);
+  var _useState3 = (0, _react.useState)({}),
+      _useState4 = _slicedToArray(_useState3, 2),
+      errors = _useState4[0],
+      setErrors = _useState4[1];
 
-  function ProfileView() {
-    var _this;
+  var _useState5 = (0, _react.useState)(JSON.parse(localStorage.getItem('userdata'))),
+      _useState6 = _slicedToArray(_useState5, 2),
+      userData = _useState6[0],
+      setUserData = _useState6[1];
 
-    _classCallCheck(this, ProfileView);
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      modal = _useState8[0],
+      setModal = _useState8[1];
 
-    _this = _super.call(this);
+  var _useState9 = (0, _react.useState)(''),
+      _useState10 = _slicedToArray(_useState9, 2),
+      lastChanged = _useState10[0],
+      setLastChanged = _useState10[1];
 
-    _this.handleSubmit = function (e) {
-      e.preventDefault();
-      var username = _this.state.newUsername;
-      var password = _this.state.newPassword;
-      var email = _this.state.newEmail;
-
-      _axios.default.put("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user')), {
-        Username: username,
-        Password: password,
-        Email: email
-      }, {
-        headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
-        }
-      }).then(function (res) {
-        console.log('Successfully updated user data.');
-      }).catch(function (err) {
-        console.log(err);
-      });
-    };
-
-    _this.updateUsername = function (e) {
-      return _this.setState({
-        newUsername: e
-      });
-    };
-
-    _this.updatePassword = function (e) {
-      return _this.setState({
-        newPassword: e
-      });
-    };
-
-    _this.updateEmail = function (e) {
-      return _this.setState({
-        newEmail: e
-      });
-    };
-
-    _this.closeModal = function () {
-      return _this.setState({
-        modal: false
-      });
-    };
-
-    var userdata = JSON.parse(localStorage.getItem('userdata'));
-    _this.state = {
-      newUsername: userdata.Username,
-      newPassword: "",
-      newEmail: userdata.Email,
-      birth: userdata.Birth,
-      modal: false
-    };
-    return _this;
-  }
-
-  _createClass(ProfileView, [{
-    key: "deleteAccount",
-    value: function deleteAccount() {
-      _axios.default.delete("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user')), {
-        headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
-        }
-      }).then(function (res) {
-        localStorage.clear();
-        window.location.href = "/";
-      }).catch(function (err) {
-        console.log(err);
-      });
+  (0, _react.useEffect)(function () {
+    if (lastChanged) {
+      var newErrors = checkFormValidity();
+      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
     }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
+  }, [lastChanged, form]);
 
-      var _this$state = this.state,
-          newUsername = _this$state.newUsername,
-          newEmail = _this$state.newEmail,
-          birth = _this$state.birth,
-          modal = _this$state.modal;
-      return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
-        className: "form-holder"
-      }, /*#__PURE__*/_react.default.createElement(_Form.default, null, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
-        controlId: "formUsername"
-      }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Username:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
-        type: "text",
-        placeholder: newUsername,
-        onChange: function onChange(e) {
-          return _this2.updateUsername(e.target.value);
-        }
-      }), /*#__PURE__*/_react.default.createElement(_Form.default.Text, {
-        muted: true
-      }, "Here you can see your current username. To change it, type in a new one.")), /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
-        controlId: "formPassword"
-      }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Password:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
-        required: true,
-        type: "password",
-        onChange: function onChange(e) {
-          return _this2.updatePassword(e.target.value);
-        }
-      }), /*#__PURE__*/_react.default.createElement(_Form.default.Text, {
-        muted: true
-      }, "Here, please type either your current password or a new one if you want to change your current one. (required)")), /*#__PURE__*/_react.default.createElement(_Form.default.Group, null, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "E-Mail Address:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
-        type: "email",
-        placeholder: newEmail,
-        onChange: function onChange(e) {
-          return _this2.updateEmail(e.target.value);
-        }
-      }), /*#__PURE__*/_react.default.createElement(_Form.default.Text, {
-        muted: true
-      }, "Here you can see your current e-mail address. To change it, type in a new one.")), /*#__PURE__*/_react.default.createElement(_Form.default.Group, null, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Date of Birth: "), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
-        plaintext: true,
-        readOnly: true,
-        defaultValue: birth.substr(0, 10)
-      })), /*#__PURE__*/_react.default.createElement(_Button.default, {
-        type: "submit",
-        onClick: this.handleSubmit
-      }, "Submit")))), /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
-        variant: "outline-primary",
-        onClick: function onClick() {
-          return _this2.setState({
-            modal: true
-          });
-        }
-      }, "Delete your account"))), modal && /*#__PURE__*/_react.default.createElement(_deleteAccountModal.DeleteAccountModal, {
-        closeModal: function closeModal() {
-          return _this2.closeModal();
-        },
-        deleteAccount: function deleteAccount() {
-          return _this2.deleteAccount();
-        }
-      }));
+  var setField = function setField(field, value) {
+    setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    setLastChanged(field);
+  };
+
+  var checkFormValidity = function checkFormValidity() {
+    var username = form.username,
+        password = form.password,
+        email = form.email;
+    var newErrors = {};
+    if (username && username !== '' && /\W/g.test(username)) newErrors.username = 'Please enter a valid username (only alphanumerical values).';
+    if (!password || password === '') newErrors.password = 'Please type in your current or a new password.';
+    if (email && email !== '' && !/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address (must contain "@").';
+    return newErrors;
+  };
+
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+    var newErrors = checkFormValidity();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
-  }]);
 
-  return ProfileView;
-}(_react.default.Component);
+    _axios.default.put("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user')), {
+      Username: form.username || userData.Username,
+      Password: form.password,
+      Email: form.email || userData.Email
+    }, {
+      headers: {
+        Authorization: "Bearer ".concat(localStorage.getItem('token'))
+      }
+    }).then(function (res) {
+      console.log('Successfully updated user data.');
+    }).catch(function (err) {
+      console.log(err);
+    });
+  };
 
-exports.ProfileView = ProfileView;
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
+  var deleteAccount = function deleteAccount() {
+    _axios.default.delete("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user')), {
+      headers: {
+        Authorization: "Bearer ".concat(localStorage.getItem('token'))
+      }
+    }).then(function (res) {
+      localStorage.clear();
+      window.location.href = "/";
+    }).catch(function (err) {
+      console.log(err);
+    });
+  };
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
+    className: "form-holder"
+  }, /*#__PURE__*/_react.default.createElement(_Form.default, {
+    noValidate: true,
+    onSubmit: function onSubmit(e) {
+      return handleSubmit(e);
+    }
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
+    controlId: "formUsername"
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Username:"), /*#__PURE__*/_react.default.createElement(_InputGroup.default, {
+    hasValidation: true
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    type: "text",
+    placeholder: userData.Username,
+    onChange: function onChange(e) {
+      return setField('username', e.target.value);
+    },
+    isInvalid: !!errors.username
+  }), /*#__PURE__*/_react.default.createElement(_Form.default.Control.Feedback, {
+    type: "invalid"
+  }, errors.username)), /*#__PURE__*/_react.default.createElement(_Form.default.Text, {
+    muted: true
+  }, "Here you can see your current username. To change it, type in a new one.")), /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
+    controlId: "formPassword"
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Password:"), /*#__PURE__*/_react.default.createElement(_InputGroup.default, {
+    hasValidation: true
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    required: true,
+    type: "password",
+    onChange: function onChange(e) {
+      return setField('password', e.target.value);
+    },
+    isInvalid: !!errors.password
+  }), /*#__PURE__*/_react.default.createElement(_Form.default.Control.Feedback, {
+    type: "invalid"
+  }, errors.password)), /*#__PURE__*/_react.default.createElement(_Form.default.Text, {
+    muted: true
+  }, "Here, please type either your current password or a new one if you want to change your current one. (required)")), /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
+    controlId: "formEmail"
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "E-Mail Address:"), /*#__PURE__*/_react.default.createElement(_InputGroup.default, {
+    hasValidation: true
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    type: "email",
+    placeholder: userData.Email,
+    onChange: function onChange(e) {
+      return setField('email', e.target.value);
+    },
+    isInvalid: !!errors.email
+  }), /*#__PURE__*/_react.default.createElement(_Form.default.Control.Feedback, {
+    type: "invalid"
+  }, errors.email)), /*#__PURE__*/_react.default.createElement(_Form.default.Text, {
+    muted: true
+  }, "Here you can see your current e-mail address. To change it, type in a new one.")), /*#__PURE__*/_react.default.createElement(_Form.default.Group, null, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Date of Birth: "), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+    plaintext: true,
+    readOnly: true,
+    defaultValue: userData.Birth.substr(0, 10)
+  })), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    type: "submit"
+  }, "Submit")))), /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    variant: "outline-primary",
+    onClick: function onClick() {
+      return setModal(true);
+    }
+  }, "Delete your account"))), modal && /*#__PURE__*/_react.default.createElement(_deleteAccountModal.DeleteAccountModal, {
+    closeModal: function closeModal() {
+      return setModal(false);
+    },
+    deleteAccount: deleteAccount
+  }));
+}
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -41590,7 +41672,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56143" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52093" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
