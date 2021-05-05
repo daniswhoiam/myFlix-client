@@ -37237,7 +37237,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function RegisterView() {
+function RegisterView(props) {
   /* Initialize necessary state variables  */
   var _useState = (0, _react.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -37270,10 +37270,23 @@ function RegisterView() {
       Email: email,
       Birth: birthday
     }).then(function (res) {
-      var data = res.data;
-      window.open('/', '_self');
+      /* const data = res.data;
+      window.open('/', '_self'); */
+      loginAfterRegister(username, password);
     }).catch(function (err) {
       console.log(err);
+    });
+  };
+
+  var loginAfterRegister = function loginAfterRegister(user, pw) {
+    _axios.default.post('https://daniswhoiam-myflix.herokuapp.com/login', {
+      Username: user,
+      Password: pw
+    }).then(function (response) {
+      var data = response.data;
+      props.onLoggedIn(data);
+    }).catch(function () {
+      console.log('Something went wrong with the log-in.');
     });
   };
 
@@ -41518,7 +41531,11 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           if (user) return /*#__PURE__*/_react.default.createElement(_reactRouterDom.Redirect, {
             to: "/"
           });
-          return /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_registerView.RegisterView, null));
+          return /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_registerView.RegisterView, {
+            onLoggedIn: function onLoggedIn(user) {
+              return _this3.onLoggedIn(user);
+            }
+          }));
         }
       }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
         path: "/profile/:username",

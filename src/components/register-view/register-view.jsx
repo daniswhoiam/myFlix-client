@@ -12,7 +12,7 @@ import Col from 'react-bootstrap/Col';
 
 import './register-view.scss';
 
-export function RegisterView() {
+export function RegisterView(props) {
   /* Initialize necessary state variables  */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,11 +29,26 @@ export function RegisterView() {
       Birth: birthday
     })
       .then(res => {
-        const data = res.data;
-        window.open('/', '_self');
+        /* const data = res.data;
+        window.open('/', '_self'); */
+        loginAfterRegister(username, password);
       })
       .catch(err => {
         console.log(err);
+      });
+  }
+
+  const loginAfterRegister = (user, pw) => {
+    axios.post('https://daniswhoiam-myflix.herokuapp.com/login', {
+      Username: user,
+      Password: pw
+    })
+      .then(response => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch(() => {
+        console.log('Something went wrong with the log-in.');
       });
   }
 

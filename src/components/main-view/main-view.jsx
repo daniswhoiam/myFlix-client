@@ -123,7 +123,7 @@ export class MainView extends React.Component {
           <Route exact path="/register" render={() => {
             if (user) return <Redirect to="/" />
             return <Col>
-              <RegisterView />
+              <RegisterView onLoggedIn={user => this.onLoggedIn(user)} />
             </Col>
           }} />
           <Route path="/profile/:username" render={() => {
