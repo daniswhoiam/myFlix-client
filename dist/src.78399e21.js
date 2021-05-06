@@ -41388,16 +41388,14 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
-      console.log(authData);
-      this.setState({
-        user: authData.user.Username
-      });
       /* Userdata item as workaround for missing GET userdata endpoint */
-
       localStorage.setItem('userdata', JSON.stringify(authData.user));
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', authData.user.Username);
-      this.getMovies(authData.token);
+      this.setState({
+        user: authData.user.Username
+      });
+      console.log(this.state);
     }
   }, {
     key: "getMovies",
