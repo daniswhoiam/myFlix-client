@@ -82,3 +82,8 @@ export function RegisterView(props) {
 
   );
 }
+
+/* Ensure that props have the right form */
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired
+}

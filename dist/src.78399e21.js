@@ -37325,6 +37325,12 @@ function RegisterView(props) {
     variant: "outline-secondary"
   }, "Back to Log-In"))));
 }
+/* Ensure that props have the right form */
+
+
+LoginView.propTypes = {
+  onLoggedIn: _propTypes.default.func.isRequired
+};
 },{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","./register-view.scss":"components/register-view/register-view.scss"}],"../node_modules/react-bootstrap/esm/divWithClassName.js":[function(require,module,exports) {
 "use strict";
 
