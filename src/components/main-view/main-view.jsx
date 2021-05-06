@@ -30,14 +30,12 @@ export class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
-      this.setState({
-        user: localStorage.getItem('user')
-      });
       this.getMovies(accessToken);
     }
   }
 
   onLoggedIn(authData) {
+    console.log(authData);
     /* Userdata item as workaround for missing GET userdata endpoint */
     localStorage.setItem('userdata', JSON.stringify(authData.user));
     localStorage.setItem('token', authData.token);
