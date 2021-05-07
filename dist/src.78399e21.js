@@ -37267,8 +37267,18 @@ function LoginView(props) {
     }).then(function (response) {
       var data = response.data;
       props.onLoggedIn(data);
-    }).catch(function () {
-      console.log('Something went wrong with the log-in.');
+    }).catch(function (err) {
+      var errorMessage = err.response.data.info;
+
+      if (errorMessage.field === 'username') {
+        setErrors({
+          username: errorMessage.message
+        });
+      } else if (errorMessage.field === 'password') {
+        setErrors({
+          password: errorMessage.message
+        });
+      }
     });
   };
 
@@ -37357,8 +37367,6 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -37417,7 +37425,7 @@ function RegisterView(props) {
     if (!password || password === '') newErrors.password = 'Please enter a password.';
     if (!email || email === '') newErrors.email = 'Please enter an e-mail address.';
     if (!/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address.';
-    if (!birth || _typeof(birth) !== date) newErrors.birth = 'Please enter your birthday.';
+    if (!birth) newErrors.birth = 'Please enter your birthday.';
     return newErrors;
   };
   /* Function to send data to server to register */
@@ -37433,16 +37441,31 @@ function RegisterView(props) {
     }
 
     _axios.default.post('https://daniswhoiam-myflix.herokuapp.com/users', {
-      Username: username,
-      Password: password,
-      Email: email,
-      Birth: birthday
+      Username: form.username,
+      Password: form.password,
+      Email: form.email,
+      Birth: form.birth
     }).then(function (res) {
       /* const data = res.data;
       window.open('/', '_self'); */
-      loginAfterRegister(username, password);
+      loginAfterRegister(form.username, form.password);
     }).catch(function (err) {
-      console.log(err);
+      var errorResponse = err.response.data;
+      var endOfPrefix = errorResponse.lastIndexOf(': ');
+
+      if (endOfPrefix !== -1) {
+        var message = errorResponse.substr(endOfPrefix);
+
+        if (message.includes('username')) {
+          setErrors({
+            username: message
+          });
+        } else if (message.includes('email')) {
+          setErrors({
+            email: message
+          });
+        }
+      }
     });
   };
 
@@ -41330,7 +41353,22 @@ function ProfileView() {
       window.location.href = "/profile/".concat(localStorage.getItem('user'));
       alert('Successfully updated your data.');
     }).catch(function (err) {
-      console.log(err);
+      var errorResponse = err.response.data;
+      var endOfPrefix = errorResponse.lastIndexOf(': ');
+
+      if (endOfPrefix !== -1) {
+        var message = errorResponse.substr(endOfPrefix);
+
+        if (message.includes('username')) {
+          setErrors({
+            username: message
+          });
+        } else if (message.includes('email')) {
+          setErrors({
+            email: message
+          });
+        }
+      }
     });
   };
 
@@ -41815,7 +41853,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51670" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55146" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

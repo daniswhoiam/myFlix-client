@@ -51,7 +51,7 @@ export function RegisterView(props) {
     if (!email || email === '') newErrors.email = 'Please enter an e-mail address.';
     if (!/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address.';
 
-    if (!birth || typeof birth !== date ) newErrors.birth = 'Please enter your birthday.';
+    if (!birth) newErrors.birth = 'Please enter your birthday.';
 
     return newErrors;
   }
@@ -67,18 +67,28 @@ export function RegisterView(props) {
     }
 
     axios.post('https://daniswhoiam-myflix.herokuapp.com/users', {
-      Username: username,
-      Password: password,
-      Email: email,
-      Birth: birthday
+      Username: form.username,
+      Password: form.password,
+      Email: form.email,
+      Birth: form.birth
     })
       .then(res => {
         /* const data = res.data;
         window.open('/', '_self'); */
-        loginAfterRegister(username, password);
+        loginAfterRegister(form.username, form.password);
       })
       .catch(err => {
-        console.log(err);
+        const errorResponse =  err.response.data;
+        const endOfPrefix = errorResponse.lastIndexOf(': ');
+        
+        if (endOfPrefix !== -1) {
+          const message = errorResponse.substr(endOfPrefix);
+          if (message.includes('username')) {
+            setErrors({username: message});
+          } else if (message.includes('email')) {
+            setErrors({email: message});
+          }
+        }
       });
   }
 

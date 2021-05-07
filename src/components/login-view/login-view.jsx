@@ -70,8 +70,13 @@ export function LoginView(props) {
         const data = response.data;
         props.onLoggedIn(data);
       })
-      .catch(() => {
-        console.log('Something went wrong with the log-in.');
+      .catch(err => {
+        const errorMessage = err.response.data.info;
+        if (errorMessage.field === 'username') {
+          setErrors({username: errorMessage.message});
+        } else if (errorMessage.field === 'password') {
+          setErrors({password: errorMessage.message});
+        }
       });
   };
 

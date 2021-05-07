@@ -82,7 +82,17 @@ export function ProfileView() {
         alert('Successfully updated your data.');
       })
       .catch(err => {
-        console.log(err);
+        const errorResponse =  err.response.data;
+        const endOfPrefix = errorResponse.lastIndexOf(': ');
+        
+        if (endOfPrefix !== -1) {
+          const message = errorResponse.substr(endOfPrefix);
+          if (message.includes('username')) {
+            setErrors({username: message});
+          } else if (message.includes('email')) {
+            setErrors({email: message});
+          }
+        }
       });
   }
 
