@@ -1,12 +1,16 @@
+/* Import from packages */
 import React from 'react';
 import axios from 'axios';
 
+/* Get Components for Routing*/
 import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom';
 
+/* Get Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
+/* Get Own Components */
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
 import { MovieCard } from '../movie-card/movie-card';
@@ -15,6 +19,7 @@ import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import { ProfileView } from '../profile-view/profile-view';
 
+/* Get corresponding SCSS file */
 import './main-view.scss';
 
 export class MainView extends React.Component {
@@ -30,23 +35,28 @@ export class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
+      /* Make sure to maintain state even if user refreshes page */
+      this.setState({
+        user: localStorage.getItem('user')
+      });
       this.getMovies(accessToken);
     }
   }
 
   onLoggedIn(authData) {
-    console.log(authData);
-    /* Userdata item as workaround for missing GET userdata endpoint */
+    /* Store user data in localStorage */
     localStorage.setItem('userdata', JSON.stringify(authData.user));
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
 
+    /* Set initial state after log-in */
     this.setState({
       user: authData.user.Username
     });
-    console.log(this.state);
+    this.getMovies(localStorage.getItem('token'));
   }
 
+  /* Asynchronously get movies from API */
   getMovies(token) {
     axios.get('https://daniswhoiam-myflix.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
@@ -62,6 +72,7 @@ export class MainView extends React.Component {
       });
   }
 
+  /* Clear state and redirect to home page after logout */
   onLoggedOut() {
     localStorage.clear();
     window.location.href = "/";
@@ -73,6 +84,7 @@ export class MainView extends React.Component {
   render() {
     const { movies, user } = this.state;
 
+    /* Parts to be reused in multiple views */
     const login = <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
     const logoutButton = <Row>
       <Col>
@@ -123,13 +135,14 @@ export class MainView extends React.Component {
               <RegisterView onLoggedIn={user => this.onLoggedIn(user)} />
             </Col>
           }} />
-          <Route path="/profile/:username" render={() => {
+          <Route path="/profile/:username" render={({ match, history }) => {
             if (!user) return login;
             return <Col>
-              <ProfileView />
+              <ProfileView onBackClick={() => history.goBack()} onLoggedOut={() => this.onLoggedOut()} />
             </Col>
           }} />
         </Row>
+        {/* Only show logoutButton if user is logged in */}
         {user && logoutButton}
       </Router>
     );

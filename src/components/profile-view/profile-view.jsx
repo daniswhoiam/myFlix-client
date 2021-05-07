@@ -1,42 +1,54 @@
 /* Import from packages */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
+/* Get Components for Routing*/
+import { Link } from 'react-router-dom';
+
+/* Get Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+/* Get Own Components */
 import { DeleteAccountModal } from './delete-account-modal';
 
-/* Import SCSS */
+/* Get corresponding SCSS file */
 import './profile-view.scss';
 
-export function ProfileView() {
+export function ProfileView(props) {
+  /* Initialize necessary state variables  */
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userdata')));
   const [modal, setModal] = useState(false);
   const [lastChanged, setLastChanged] = useState('');
 
+  /* Enable real-time validation */
   useEffect(() => {
     if (lastChanged) {
       const newErrors = checkFormValidity();
 
+      /* Only change error state of the lastChanged field */
       setErrors({
         ...errors,
         [lastChanged]: newErrors[lastChanged]
       });
     }
+    /* Trigger after each change to form or lastChanged state */
   }, [lastChanged, form]);
 
   const setField = (field, value) => {
+    /* Only change value of current field */
     setForm({
       ...form,
       [field]: value
     });
 
+    /* Maintain lastChanged value to currently edited field */
     setLastChanged(field);
   };
 
@@ -44,18 +56,24 @@ export function ProfileView() {
     const { username, password, email } = form;
     const newErrors = {};
 
+    /* Do not require a new username, but if it is there make sure there are only alphanumeric values */
     if (username && username !== '' && /\W/g.test(username)) newErrors.username = 'Please enter a valid username (only alphanumerical values).';
 
+    /* Require a password to be entered (new or old) -> cannot retrieve current password from localStorage */
     if (!password || password === '') newErrors.password = 'Please type in your current or a new password.';
 
+    /* Do not require a new email address, but if it is there make sure it is valid (contains @) */
     if (email && email !== '' && !/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address (must contain "@").';
 
+    /* Returns object with errors for all wrong fields */
     return newErrors;
   }
 
+  /* Function to send data to server to change user data */
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    /* If there are errors, display errors and stop submit */
     const newErrors = checkFormValidity();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -65,6 +83,7 @@ export function ProfileView() {
     axios.put(
       `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}`,
       {
+        /* If no input, take standard values -> due to how API is designed */
         Username: form.username || userData.Username,
         Password: form.password,
         Email: form.email || userData.Email
@@ -76,15 +95,18 @@ export function ProfileView() {
       }
     )
       .then(res => {
+        /* In case of a successful request, update user data in localStorage */
         localStorage.setItem('userdata', JSON.stringify(res.data));
         localStorage.setItem('user', res.data.Username);
+        /* Change URL to match right username */
         window.location.href = `/profile/${localStorage.getItem('user')}`;
         alert('Successfully updated your data.');
       })
       .catch(err => {
+        /* Display errors from server-side validation */
         const errorResponse =  err.response.data;
         const endOfPrefix = errorResponse.lastIndexOf(': ');
-        
+         /* Only display relevant part of error message */
         if (endOfPrefix !== -1) {
           const message = errorResponse.substr(endOfPrefix);
           if (message.includes('username')) {
@@ -96,6 +118,7 @@ export function ProfileView() {
       });
   }
 
+  /* Handle account deletion */
   const deleteAccount = () => {
     axios.delete(
       `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}`,
@@ -106,8 +129,8 @@ export function ProfileView() {
       }
     )
       .then(res => {
-        localStorage.clear();
-        window.location.href = "/";
+        /* If request successful, log out user and redirect to homepage */
+        props.onLoggedOut();
       })
       .catch(err => {
         console.log(err);
@@ -119,6 +142,7 @@ export function ProfileView() {
       <Row>
         <Col className="form-holder">
           <Form
+            /* Disable standard HTML5 validation */
             noValidate
             onSubmit={(e) => handleSubmit(e)}
           >
@@ -180,7 +204,18 @@ export function ProfileView() {
           <Button variant="outline-primary" onClick={() => setModal(true)}>Delete your account</Button>
         </Col>
       </Row>
+      <Row>
+        <Col>
+          <Button onClick={() => { props.onBackClick(); }}>Back</Button>
+        </Col>
+      </Row>
+      {/* If user wants to delete account, ask again to make sure */}
       {modal && <DeleteAccountModal closeModal={() => setModal(false)} deleteAccount={deleteAccount} />}
     </>
   );
+}
+
+ProfileView.propTypes = {
+  onBackClick: PropTypes.func.isRequired,
+  onLoggedOut: PropTypes.func.isRequired
 }

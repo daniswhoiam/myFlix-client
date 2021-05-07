@@ -37226,16 +37226,25 @@ function LoginView(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       lastChanged = _useState6[0],
       setLastChanged = _useState6[1];
+  /* Enable real-time validation */
+
 
   (0, _react.useEffect)(function () {
     if (lastChanged) {
       var newErrors = checkFormValidity();
+      /* Only change error state of the lastChanged field */
+
       setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
     }
+    /* Trigger after each change to form or lastChanged state */
+
   }, [lastChanged, form]);
 
   var setField = function setField(field, value) {
+    /* Only change value of current field */
     setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    /* Maintain lastChanged value to currently edited field */
+
     setLastChanged(field);
   };
 
@@ -37243,8 +37252,14 @@ function LoginView(props) {
     var username = form.username,
         password = form.password;
     var newErrors = {};
+    /* Require username to be entered */
+
     if (!username || username === '') newErrors.username = 'Please enter your username.';
+    /* Require password to be entered */
+
     if (!password || password === '') newErrors.password = 'Please enter your password.';
+    /* Returns object with errors for all wrong fields */
+
     return newErrors;
   };
   /* Function for sending the credentials to verify */
@@ -37252,6 +37267,8 @@ function LoginView(props) {
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
+    /* If there are errors, display errors and stop submit */
+
     var newErrors = checkFormValidity();
 
     if (Object.keys(newErrors).length > 0) {
@@ -37264,10 +37281,12 @@ function LoginView(props) {
     _axios.default.post('https://daniswhoiam-myflix.herokuapp.com/login', {
       Username: form.username,
       Password: form.password
-    }).then(function (response) {
-      var data = response.data;
+    }).then(function (res) {
+      /* Log-in if request was successful */
+      var data = res.data;
       props.onLoggedIn(data);
     }).catch(function (err) {
+      /* Display errors from server-side validation */
       var errorMessage = err.response.data.info;
 
       if (errorMessage.field === 'username') {
@@ -37284,7 +37303,9 @@ function LoginView(props) {
 
   return /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
     className: "form-holder"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default, {
+  }, /*#__PURE__*/_react.default.createElement(_Form.default
+  /* Disable standard HTML5 validation */
+  , {
     noValidate: true,
     onSubmit: function onSubmit(e) {
       return handleSubmit(e);
@@ -37343,9 +37364,9 @@ exports.RegisterView = RegisterView;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _axios = _interopRequireDefault(require("axios"));
-
 var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _axios = _interopRequireDefault(require("axios"));
 
 var _reactRouterDom = require("react-router-dom");
 
@@ -37401,16 +37422,25 @@ function RegisterView(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       lastChanged = _useState6[0],
       setLastChanged = _useState6[1];
+  /* Enable real-time validation */
+
 
   (0, _react.useEffect)(function () {
     if (lastChanged) {
       var newErrors = checkFormValidity();
+      /* Only change error state of the lastChanged field */
+
       setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
     }
+    /* Trigger after each change to form or lastChanged state */
+
   }, [lastChanged, form]);
 
   var setField = function setField(field, value) {
+    /* Only change value of current field */
     setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    /* Maintain lastChanged value to currently edited field */
+
     setLastChanged(field);
   };
 
@@ -37420,12 +37450,22 @@ function RegisterView(props) {
         email = form.email,
         birth = form.birth;
     var newErrors = {};
+    /* Require username to exist and to only have alphanumeric values */
+
     if (!username || username === '') newErrors.username = 'Please enter a username.';
     if (/\W/g.test(username)) newErrors.username = 'Your chosen username is invalid. Please do not use special characters.';
+    /* Require password value */
+
     if (!password || password === '') newErrors.password = 'Please enter a password.';
+    /* Require email value and validate by checking @ sign */
+
     if (!email || email === '') newErrors.email = 'Please enter an e-mail address.';
     if (!/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address.';
+    /* Require birthday value */
+
     if (!birth) newErrors.birth = 'Please enter your birthday.';
+    /* Returns object with errors for all wrong fields */
+
     return newErrors;
   };
   /* Function to send data to server to register */
@@ -37433,12 +37473,16 @@ function RegisterView(props) {
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
+    /* If there are errors, display errors and stop submit */
+
     var newErrors = checkFormValidity();
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
+    /* Send a request to the server to create a new user */
+
 
     _axios.default.post('https://daniswhoiam-myflix.herokuapp.com/users', {
       Username: form.username,
@@ -37448,10 +37492,14 @@ function RegisterView(props) {
     }).then(function (res) {
       /* const data = res.data;
       window.open('/', '_self'); */
+
+      /* Log-in if request was successful */
       loginAfterRegister(form.username, form.password);
     }).catch(function (err) {
+      /* Display errors from server-side validation */
       var errorResponse = err.response.data;
       var endOfPrefix = errorResponse.lastIndexOf(': ');
+      /* Only display relevant part of error message */
 
       if (endOfPrefix !== -1) {
         var message = errorResponse.substr(endOfPrefix);
@@ -37468,22 +37516,39 @@ function RegisterView(props) {
       }
     });
   };
+  /* Enable auto-login after successful registration */
+
 
   var loginAfterRegister = function loginAfterRegister(user, pw) {
+    /* Send a request to the server for authentication */
     _axios.default.post('https://daniswhoiam-myflix.herokuapp.com/login', {
       Username: user,
       Password: pw
-    }).then(function (response) {
-      var data = response.data;
+    }).then(function (res) {
+      /* Log-in if request was successful */
+      var data = res.data;
       props.onLoggedIn(data);
-    }).catch(function () {
-      console.log('Something went wrong with the log-in.');
+    }).catch(function (err) {
+      /* Display errors from server-side validation */
+      var errorMessage = err.response.data.info;
+
+      if (errorMessage.field === 'username') {
+        setErrors({
+          username: errorMessage.message
+        });
+      } else if (errorMessage.field === 'password') {
+        setErrors({
+          password: errorMessage.message
+        });
+      }
     });
   };
 
   return /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
     className: "form-holder"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default, {
+  }, /*#__PURE__*/_react.default.createElement(_Form.default
+  /* Disable standard HTML5 validation */
+  , {
     noValidate: true,
     onSubmit: function onSubmit(e) {
       return handleSubmit(e);
@@ -37550,7 +37615,7 @@ function RegisterView(props) {
 RegisterView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./register-view.scss":"components/register-view/register-view.scss"}],"../node_modules/react-bootstrap/esm/divWithClassName.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./register-view.scss":"components/register-view/register-view.scss"}],"../node_modules/react-bootstrap/esm/divWithClassName.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37795,8 +37860,13 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this);
     _this.state = {
+      /* Make whole text readable if necessary */
       readMore: false,
+
+      /* Make cards have the same size */
       maxTextLength: 100,
+
+      /* Show whether movie is favorited */
       favorited: false
     };
     return _this;
@@ -37805,6 +37875,7 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
   _createClass(MovieCard, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      /* If the movie was favorited by the user, show it */
       var favoriteMovies = JSON.parse(localStorage.getItem('userdata')).FavoriteMovies;
 
       if (favoriteMovies) {
@@ -37821,41 +37892,38 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
         readMore: bool
       });
     }
+    /* Enable user to easily (un)favorite a movie -> toggle depending on current state*/
+
   }, {
-    key: "toggleFavoriteMovie",
-    value: function toggleFavoriteMovie(currentState) {
+    key: "updateFavoriteMovieData",
+    value: function updateFavoriteMovieData(currentState) {
       var _this2 = this;
 
-      if (currentState) {
-        _axios.default.delete("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(this.props.movie._id), {
-          headers: {
-            Authorization: "Bearer ".concat(localStorage.getItem('token'))
-          }
-        }).then(function (res) {
-          console.log(res);
-          localStorage.setItem('userdata', JSON.stringify(res.data));
+      this.handleFavoriteMovieRequest(currentState).then(function (res) {
+        /* If request was successful, update user data in localStorage and state of this movie */
+        localStorage.setItem('userdata', JSON.stringify(res.data));
 
-          _this2.setState({
-            favorited: false
-          });
-        }).catch(function (err) {
-          console.log(err);
+        _this2.setState({
+          favorited: !currentState
         });
-      } else {
-        _axios.default.patch("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(this.props.movie._id), {}, {
-          headers: {
-            Authorization: "Bearer ".concat(localStorage.getItem('token'))
-          }
-        }).then(function (res) {
-          localStorage.setItem('userdata', JSON.stringify(res.data));
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+    /* Request is separate because rest of the (un)favorite process is the same */
 
-          _this2.setState({
-            favorited: true
-          });
-        }).catch(function (err) {
-          console.log(err);
-        });
-      }
+  }, {
+    key: "handleFavoriteMovieRequest",
+    value: function handleFavoriteMovieRequest(currentState) {
+      return currentState ? _axios.default.delete("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(this.props.movie._id), {
+        headers: {
+          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+        }
+      }) : _axios.default.patch("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(this.props.movie._id), {}, {
+        headers: {
+          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+        }
+      });
     }
   }, {
     key: "render",
@@ -37890,7 +37958,7 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
       }, "Open")), favorited ? /*#__PURE__*/_react.default.createElement("div", {
         className: "starOn",
         onClick: function onClick() {
-          return _this3.toggleFavoriteMovie(true);
+          return _this3.updateFavoriteMovieData(true);
         }
       }, /*#__PURE__*/_react.default.createElement("svg", {
         xmlns: "http://www.w3.org/2000/svg",
@@ -37900,7 +37968,7 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
       }))) : /*#__PURE__*/_react.default.createElement("div", {
         className: "starOff",
         onClick: function onClick() {
-          return _this3.toggleFavoriteMovie(false);
+          return _this3.updateFavoriteMovieData(false);
         }
       }, /*#__PURE__*/_react.default.createElement("svg", {
         xmlns: "http://www.w3.org/2000/svg",
@@ -37953,13 +38021,13 @@ var _react = _interopRequireDefault(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _reactRouterDom = require("react-router-dom");
+
 var _Row = _interopRequireDefault(require("react-bootstrap/Row"));
 
 var _Col = _interopRequireDefault(require("react-bootstrap/Col"));
 
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
-
-var _reactRouterDom = require("react-router-dom");
 
 require("./movie-view.scss");
 
@@ -38070,7 +38138,7 @@ MovieView.propTypes = {
   }).isRequired,
   onBackClick: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/director-view/director-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/director-view/director-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -41241,7 +41309,11 @@ exports.ProfileView = ProfileView;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
 var _axios = _interopRequireDefault(require("axios"));
+
+var _reactRouterDom = require("react-router-dom");
 
 var _Row = _interopRequireDefault(require("react-bootstrap/Row"));
 
@@ -41281,7 +41353,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function ProfileView() {
+function ProfileView(props) {
+  /* Initialize necessary state variables  */
   var _useState = (0, _react.useState)({}),
       _useState2 = _slicedToArray(_useState, 2),
       form = _useState2[0],
@@ -41306,16 +41379,25 @@ function ProfileView() {
       _useState10 = _slicedToArray(_useState9, 2),
       lastChanged = _useState10[0],
       setLastChanged = _useState10[1];
+  /* Enable real-time validation */
+
 
   (0, _react.useEffect)(function () {
     if (lastChanged) {
       var newErrors = checkFormValidity();
+      /* Only change error state of the lastChanged field */
+
       setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
     }
+    /* Trigger after each change to form or lastChanged state */
+
   }, [lastChanged, form]);
 
   var setField = function setField(field, value) {
+    /* Only change value of current field */
     setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    /* Maintain lastChanged value to currently edited field */
+
     setLastChanged(field);
   };
 
@@ -41324,14 +41406,26 @@ function ProfileView() {
         password = form.password,
         email = form.email;
     var newErrors = {};
+    /* Do not require a new username, but if it is there make sure there are only alphanumeric values */
+
     if (username && username !== '' && /\W/g.test(username)) newErrors.username = 'Please enter a valid username (only alphanumerical values).';
+    /* Require a password to be entered (new or old) -> cannot retrieve current password from localStorage */
+
     if (!password || password === '') newErrors.password = 'Please type in your current or a new password.';
+    /* Do not require a new email address, but if it is there make sure it is valid (contains @) */
+
     if (email && email !== '' && !/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address (must contain "@").';
+    /* Returns object with errors for all wrong fields */
+
     return newErrors;
   };
+  /* Function to send data to server to change user data */
+
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
+    /* If there are errors, display errors and stop submit */
+
     var newErrors = checkFormValidity();
 
     if (Object.keys(newErrors).length > 0) {
@@ -41340,6 +41434,7 @@ function ProfileView() {
     }
 
     _axios.default.put("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user')), {
+      /* If no input, take standard values -> due to how API is designed */
       Username: form.username || userData.Username,
       Password: form.password,
       Email: form.email || userData.Email
@@ -41348,13 +41443,18 @@ function ProfileView() {
         Authorization: "Bearer ".concat(localStorage.getItem('token'))
       }
     }).then(function (res) {
+      /* In case of a successful request, update user data in localStorage */
       localStorage.setItem('userdata', JSON.stringify(res.data));
       localStorage.setItem('user', res.data.Username);
+      /* Change URL to match right username */
+
       window.location.href = "/profile/".concat(localStorage.getItem('user'));
       alert('Successfully updated your data.');
     }).catch(function (err) {
+      /* Display errors from server-side validation */
       var errorResponse = err.response.data;
       var endOfPrefix = errorResponse.lastIndexOf(': ');
+      /* Only display relevant part of error message */
 
       if (endOfPrefix !== -1) {
         var message = errorResponse.substr(endOfPrefix);
@@ -41371,6 +41471,8 @@ function ProfileView() {
       }
     });
   };
+  /* Handle account deletion */
+
 
   var deleteAccount = function deleteAccount() {
     _axios.default.delete("https://daniswhoiam-myflix.herokuapp.com/users/".concat(localStorage.getItem('user')), {
@@ -41378,8 +41480,8 @@ function ProfileView() {
         Authorization: "Bearer ".concat(localStorage.getItem('token'))
       }
     }).then(function (res) {
-      localStorage.clear();
-      window.location.href = "/";
+      /* If request successful, log out user and redirect to homepage */
+      props.onLoggedOut();
     }).catch(function (err) {
       console.log(err);
     });
@@ -41387,7 +41489,9 @@ function ProfileView() {
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
     className: "form-holder"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default, {
+  }, /*#__PURE__*/_react.default.createElement(_Form.default
+  /* Disable standard HTML5 validation */
+  , {
     noValidate: true,
     onSubmit: function onSubmit(e) {
       return handleSubmit(e);
@@ -41448,14 +41552,23 @@ function ProfileView() {
     onClick: function onClick() {
       return setModal(true);
     }
-  }, "Delete your account"))), modal && /*#__PURE__*/_react.default.createElement(_deleteAccountModal.DeleteAccountModal, {
+  }, "Delete your account"))), /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    onClick: function onClick() {
+      props.onBackClick();
+    }
+  }, "Back"))), modal && /*#__PURE__*/_react.default.createElement(_deleteAccountModal.DeleteAccountModal, {
     closeModal: function closeModal() {
       return setModal(false);
     },
     deleteAccount: deleteAccount
   }));
 }
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
+
+ProfileView.propTypes = {
+  onBackClick: _propTypes.default.func.isRequired,
+  onLoggedOut: _propTypes.default.func.isRequired
+};
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -41544,23 +41657,29 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       var accessToken = localStorage.getItem('token');
 
       if (accessToken !== null) {
+        /* Make sure to maintain state even if user refreshes page */
+        this.setState({
+          user: localStorage.getItem('user')
+        });
         this.getMovies(accessToken);
       }
     }
   }, {
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
-      console.log(authData);
-      /* Userdata item as workaround for missing GET userdata endpoint */
-
+      /* Store user data in localStorage */
       localStorage.setItem('userdata', JSON.stringify(authData.user));
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', authData.user.Username);
+      /* Set initial state after log-in */
+
       this.setState({
         user: authData.user.Username
       });
-      console.log(this.state);
+      this.getMovies(localStorage.getItem('token'));
     }
+    /* Asynchronously get movies from API */
+
   }, {
     key: "getMovies",
     value: function getMovies(token) {
@@ -41579,6 +41698,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         console.log(err);
       });
     }
+    /* Clear state and redirect to home page after logout */
+
   }, {
     key: "onLoggedOut",
     value: function onLoggedOut() {
@@ -41596,6 +41717,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       var _this$state = this.state,
           movies = _this$state.movies,
           user = _this$state.user;
+      /* Parts to be reused in multiple views */
 
       var login = /*#__PURE__*/_react.default.createElement(_loginView.LoginView, {
         onLoggedIn: function onLoggedIn(user) {
@@ -41701,9 +41823,18 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         }
       }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
         path: "/profile/:username",
-        render: function render() {
+        render: function render(_ref4) {
+          var match = _ref4.match,
+              history = _ref4.history;
           if (!user) return login;
-          return /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_profileView.ProfileView, null));
+          return /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_profileView.ProfileView, {
+            onBackClick: function onBackClick() {
+              return history.goBack();
+            },
+            onLoggedOut: function onLoggedOut() {
+              return _this3.onLoggedOut();
+            }
+          }));
         }
       })), user && logoutButton);
     }
@@ -41853,7 +41984,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55146" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57884" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,16 +1,19 @@
 /* Import from packages */
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
+/* Get Components for Routing*/
 import { Link } from 'react-router-dom';
 
+/* Get Bootstrap Components */
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+/* Get corresponding SCSS file */
 import './register-view.scss';
 
 export function RegisterView(props) {
@@ -19,23 +22,28 @@ export function RegisterView(props) {
   const [errors, setErrors] = useState({});
   const [lastChanged, setLastChanged] = useState('');
 
+  /* Enable real-time validation */
   useEffect(() => {
     if (lastChanged) {
       const newErrors = checkFormValidity();
 
+      /* Only change error state of the lastChanged field */
       setErrors({
         ...errors,
         [lastChanged]: newErrors[lastChanged]
       });
     }
+    /* Trigger after each change to form or lastChanged state */
   }, [lastChanged, form]);
 
   const setField = (field, value) => {
+    /* Only change value of current field */
     setForm({
       ...form,
       [field]: value
     });
 
+    /* Maintain lastChanged value to currently edited field */
     setLastChanged(field);
   }
 
@@ -43,16 +51,21 @@ export function RegisterView(props) {
     const { username, password, email, birth } = form;
     const newErrors = {};
 
+    /* Require username to exist and to only have alphanumeric values */
     if (!username || username === '') newErrors.username = 'Please enter a username.';
     if (/\W/g.test(username)) newErrors.username = 'Your chosen username is invalid. Please do not use special characters.';
 
+    /* Require password value */
     if (!password || password === '') newErrors.password = 'Please enter a password.';
 
+    /* Require email value and validate by checking @ sign */
     if (!email || email === '') newErrors.email = 'Please enter an e-mail address.';
     if (!/@/g.test(email)) newErrors.email = 'Please enter a valid e-mail address.';
 
+    /* Require birthday value */
     if (!birth) newErrors.birth = 'Please enter your birthday.';
 
+    /* Returns object with errors for all wrong fields */
     return newErrors;
   }
 
@@ -60,12 +73,14 @@ export function RegisterView(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    /* If there are errors, display errors and stop submit */
     const newErrors = checkFormValidity();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
+    /* Send a request to the server to create a new user */
     axios.post('https://daniswhoiam-myflix.herokuapp.com/users', {
       Username: form.username,
       Password: form.password,
@@ -75,12 +90,15 @@ export function RegisterView(props) {
       .then(res => {
         /* const data = res.data;
         window.open('/', '_self'); */
+
+        /* Log-in if request was successful */
         loginAfterRegister(form.username, form.password);
       })
       .catch(err => {
+        /* Display errors from server-side validation */
         const errorResponse =  err.response.data;
         const endOfPrefix = errorResponse.lastIndexOf(': ');
-        
+        /* Only display relevant part of error message */
         if (endOfPrefix !== -1) {
           const message = errorResponse.substr(endOfPrefix);
           if (message.includes('username')) {
@@ -92,17 +110,26 @@ export function RegisterView(props) {
       });
   }
 
+  /* Enable auto-login after successful registration */
   const loginAfterRegister = (user, pw) => {
+    /* Send a request to the server for authentication */
     axios.post('https://daniswhoiam-myflix.herokuapp.com/login', {
       Username: user,
       Password: pw
     })
-      .then(response => {
-        const data = response.data;
+      .then(res => {
+        /* Log-in if request was successful */
+        const data = res.data;
         props.onLoggedIn(data);
       })
-      .catch(() => {
-        console.log('Something went wrong with the log-in.');
+      .catch(err => {
+        /* Display errors from server-side validation */
+        const errorMessage = err.response.data.info;
+        if (errorMessage.field === 'username') {
+          setErrors({username: errorMessage.message});
+        } else if (errorMessage.field === 'password') {
+          setErrors({password: errorMessage.message});
+        }
       });
   }
 
@@ -110,6 +137,7 @@ export function RegisterView(props) {
     <Row>
       <Col className="form-holder">
         <Form
+          /* Disable standard HTML5 validation */
           noValidate
           onSubmit={(e) => handleSubmit(e)}
         >

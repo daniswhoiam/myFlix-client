@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+/* Get Components for Routing*/
 import { Link } from 'react-router-dom';
 
+/* Get Bootstrap Components */
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-/* Import SCSS */
+/* Get corresponding SCSS file */
 import './login-view.scss';
 
 export function LoginView(props) {
@@ -20,23 +22,28 @@ export function LoginView(props) {
   const [errors, setErrors] = useState({});
   const [lastChanged, setLastChanged] = useState('');
 
+  /* Enable real-time validation */
   useEffect(() => {
     if (lastChanged) {
       const newErrors = checkFormValidity();
 
+      /* Only change error state of the lastChanged field */
       setErrors({
         ...errors,
         [lastChanged]: newErrors[lastChanged]
       });
     }
+    /* Trigger after each change to form or lastChanged state */
   }, [lastChanged, form]);
 
   const setField = (field, value) => {
+    /* Only change value of current field */
     setForm({
       ...form,
       [field]: value
     });
 
+    /* Maintain lastChanged value to currently edited field */
     setLastChanged(field);
   }
 
@@ -44,10 +51,13 @@ export function LoginView(props) {
     const { username, password } = form;
     const newErrors = {};
 
+    /* Require username to be entered */
     if (!username || username === '') newErrors.username = 'Please enter your username.';
 
+    /* Require password to be entered */
     if (!password || password === '') newErrors.password = 'Please enter your password.';
 
+    /* Returns object with errors for all wrong fields */
     return newErrors;
   }
 
@@ -55,6 +65,7 @@ export function LoginView(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    /* If there are errors, display errors and stop submit */
     const newErrors = checkFormValidity();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -66,11 +77,13 @@ export function LoginView(props) {
       Username: form.username,
       Password: form.password
     })
-      .then(response => {
-        const data = response.data;
+      .then(res => {
+        /* Log-in if request was successful */
+        const data = res.data;
         props.onLoggedIn(data);
       })
       .catch(err => {
+        /* Display errors from server-side validation */
         const errorMessage = err.response.data.info;
         if (errorMessage.field === 'username') {
           setErrors({username: errorMessage.message});
@@ -84,6 +97,7 @@ export function LoginView(props) {
     <Row>
       <Col className="form-holder">
         <Form
+          /* Disable standard HTML5 validation */
           noValidate
           onSubmit={(e) => handleSubmit(e)}
         >

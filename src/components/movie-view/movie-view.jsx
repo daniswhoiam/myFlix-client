@@ -1,11 +1,14 @@
 /* Import from packages */
 import React from 'react';
 import PropTypes from 'prop-types';
+
+/* Get Components for Routing*/
+import { Link } from 'react-router-dom';
+
+/* Get Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-
-import { Link } from 'react-router-dom';
 
 /* Import SCSS */
 import './movie-view.scss';
