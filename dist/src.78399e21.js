@@ -37226,19 +37226,10 @@ function LoginView(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       lastChanged = _useState6[0],
       setLastChanged = _useState6[1];
-  /* Enable real-time validation */
+  /* Validation cycle after each change to a field */
 
 
-  (0, _react.useEffect)(function () {
-    if (lastChanged) {
-      var newErrors = checkFormValidity();
-      /* Only change error state of the lastChanged field */
-
-      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
-    }
-    /* Trigger after each change to form or lastChanged state */
-
-  }, [lastChanged, JSON.stringify(form)]);
+  (0, _react.useEffect)(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
@@ -37262,8 +37253,20 @@ function LoginView(props) {
 
     return newErrors;
   };
-  /* Function for sending the credentials to verify */
+  /* Defined with function keyword to be able to use it in useEffect and place it down here */
 
+
+  function realtimeValidation() {
+    if (lastChanged) {
+      var newErrors = checkFormValidity();
+      /* Only change error state of the lastChanged field */
+
+      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
+    }
+  }
+
+  ;
+  /* Function for sending the credentials to verify */
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
@@ -37422,19 +37425,10 @@ function RegisterView(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       lastChanged = _useState6[0],
       setLastChanged = _useState6[1];
-  /* Enable real-time validation */
+  /* Validation cycle after each change to a field */
 
 
-  (0, _react.useEffect)(function () {
-    if (lastChanged) {
-      var newErrors = checkFormValidity();
-      /* Only change error state of the lastChanged field */
-
-      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
-    }
-    /* Trigger after each change to form or lastChanged state */
-
-  }, [lastChanged, JSON.stringify(form)]);
+  (0, _react.useEffect)(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
@@ -37468,8 +37462,20 @@ function RegisterView(props) {
 
     return newErrors;
   };
-  /* Function to send data to server to register */
+  /* Defined with function keyword to be able to use it in useEffect and place it down here */
 
+
+  function realtimeValidation() {
+    if (lastChanged) {
+      var newErrors = checkFormValidity();
+      /* Only change error state of the lastChanged field */
+
+      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
+    }
+  }
+
+  ;
+  /* Function to send data to server to register */
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
@@ -41313,8 +41319,6 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
-var _reactRouterDom = require("react-router-dom");
-
 var _Row = _interopRequireDefault(require("react-bootstrap/Row"));
 
 var _Col = _interopRequireDefault(require("react-bootstrap/Col"));
@@ -41379,19 +41383,10 @@ function ProfileView(props) {
       _useState10 = _slicedToArray(_useState9, 2),
       lastChanged = _useState10[0],
       setLastChanged = _useState10[1];
-  /* Enable real-time validation */
+  /* Validation cycle after each change to a field */
 
 
-  (0, _react.useEffect)(function () {
-    if (lastChanged) {
-      var newErrors = checkFormValidity();
-      /* Only change error state of the lastChanged field */
-
-      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
-    }
-    /* Trigger after each change to form or lastChanged state */
-
-  }, [lastChanged, JSON.stringify(form)]);
+  (0, _react.useEffect)(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
@@ -41419,8 +41414,20 @@ function ProfileView(props) {
 
     return newErrors;
   };
-  /* Function to send data to server to change user data */
+  /* Defined with function keyword to be able to use it in useEffect and place it down here */
 
+
+  function realtimeValidation() {
+    if (lastChanged) {
+      var newErrors = checkFormValidity();
+      /* Only change error state of the lastChanged field */
+
+      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
+    }
+  }
+
+  ;
+  /* Function to send data to server to change user data */
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
@@ -41568,7 +41575,7 @@ ProfileView.propTypes = {
   onBackClick: _propTypes.default.func.isRequired,
   onLoggedOut: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/InputGroup":"../node_modules/react-bootstrap/esm/InputGroup.js","./delete-account-modal":"components/profile-view/delete-account-modal.jsx","./profile-view.scss":"components/profile-view/profile-view.scss"}],"components/main-view/main-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);

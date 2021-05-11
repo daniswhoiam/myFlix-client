@@ -22,19 +22,8 @@ export function RegisterView(props) {
   const [errors, setErrors] = useState({});
   const [lastChanged, setLastChanged] = useState('');
 
-  /* Enable real-time validation */
-  useEffect(() => {
-    if (lastChanged) {
-      const newErrors = checkFormValidity();
-
-      /* Only change error state of the lastChanged field */
-      setErrors({
-        ...errors,
-        [lastChanged]: newErrors[lastChanged]
-      });
-    }
-    /* Trigger after each change to form or lastChanged state */
-  }, [lastChanged, JSON.stringify(form)]);
+  /* Validation cycle after each change to a field */
+  useEffect(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   const setField = (field, value) => {
     /* Only change value of current field */
@@ -45,7 +34,7 @@ export function RegisterView(props) {
 
     /* Maintain lastChanged value to currently edited field */
     setLastChanged(field);
-  }
+  };
 
   const checkFormValidity = () => {
     const { username, password, email, birth } = form;
@@ -67,7 +56,20 @@ export function RegisterView(props) {
 
     /* Returns object with errors for all wrong fields */
     return newErrors;
-  }
+  };
+
+  /* Defined with function keyword to be able to use it in useEffect and place it down here */
+  function realtimeValidation () {
+    if (lastChanged) {
+      const newErrors = checkFormValidity();
+
+      /* Only change error state of the lastChanged field */
+      setErrors({
+        ...errors,
+        [lastChanged]: newErrors[lastChanged]
+      });
+    }
+  };
 
   /* Function to send data to server to register */
   const handleSubmit = (e) => {
@@ -96,19 +98,19 @@ export function RegisterView(props) {
       })
       .catch(err => {
         /* Display errors from server-side validation */
-        const errorResponse =  err.response.data;
+        const errorResponse = err.response.data;
         const endOfPrefix = errorResponse.lastIndexOf(': ');
         /* Only display relevant part of error message */
         if (endOfPrefix !== -1) {
           const message = errorResponse.substr(endOfPrefix);
           if (message.includes('username')) {
-            setErrors({username: message});
+            setErrors({ username: message });
           } else if (message.includes('email')) {
-            setErrors({email: message});
+            setErrors({ email: message });
           }
         }
       });
-  }
+  };
 
   /* Enable auto-login after successful registration */
   const loginAfterRegister = (user, pw) => {
@@ -126,12 +128,12 @@ export function RegisterView(props) {
         /* Display errors from server-side validation */
         const errorMessage = err.response.data.info;
         if (errorMessage.field === 'username') {
-          setErrors({username: errorMessage.message});
+          setErrors({ username: errorMessage.message });
         } else if (errorMessage.field === 'password') {
-          setErrors({password: errorMessage.message});
+          setErrors({ password: errorMessage.message });
         }
       });
-  }
+  };
 
   return (
     <Row>

@@ -22,19 +22,8 @@ export function LoginView(props) {
   const [errors, setErrors] = useState({});
   const [lastChanged, setLastChanged] = useState('');
 
-  /* Enable real-time validation */
-  useEffect(() => {
-    if (lastChanged) {
-      const newErrors = checkFormValidity();
-
-      /* Only change error state of the lastChanged field */
-      setErrors({
-        ...errors,
-        [lastChanged]: newErrors[lastChanged]
-      });
-    }
-    /* Trigger after each change to form or lastChanged state */
-  }, [lastChanged, JSON.stringify(form)]);
+  /* Validation cycle after each change to a field */
+  useEffect(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   const setField = (field, value) => {
     /* Only change value of current field */
@@ -45,7 +34,7 @@ export function LoginView(props) {
 
     /* Maintain lastChanged value to currently edited field */
     setLastChanged(field);
-  }
+  };
 
   const checkFormValidity = () => {
     const { username, password } = form;
@@ -59,7 +48,21 @@ export function LoginView(props) {
 
     /* Returns object with errors for all wrong fields */
     return newErrors;
-  }
+  };
+
+  /* Defined with function keyword to be able to use it in useEffect and place it down here */
+  function realtimeValidation () {
+    if (lastChanged) {
+      const newErrors = checkFormValidity();
+
+      /* Only change error state of the lastChanged field */
+      setErrors({
+        ...errors,
+        [lastChanged]: newErrors[lastChanged]
+      });
+    }
+  };
+
 
   /* Function for sending the credentials to verify */
   const handleSubmit = (e) => {

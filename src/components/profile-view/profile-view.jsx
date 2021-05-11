@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-/* Get Components for Routing*/
-import { Link } from 'react-router-dom';
-
 /* Get Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -27,19 +24,8 @@ export function ProfileView(props) {
   const [modal, setModal] = useState(false);
   const [lastChanged, setLastChanged] = useState('');
 
-  /* Enable real-time validation */
-  useEffect(() => {
-    if (lastChanged) {
-      const newErrors = checkFormValidity();
-
-      /* Only change error state of the lastChanged field */
-      setErrors({
-        ...errors,
-        [lastChanged]: newErrors[lastChanged]
-      });
-    }
-    /* Trigger after each change to form or lastChanged state */
-  }, [lastChanged, JSON.stringify(form)]);
+  /* Validation cycle after each change to a field */
+  useEffect(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   const setField = (field, value) => {
     /* Only change value of current field */
@@ -67,7 +53,20 @@ export function ProfileView(props) {
 
     /* Returns object with errors for all wrong fields */
     return newErrors;
-  }
+  };
+
+  /* Defined with function keyword to be able to use it in useEffect and place it down here */
+  function realtimeValidation () {
+    if (lastChanged) {
+      const newErrors = checkFormValidity();
+
+      /* Only change error state of the lastChanged field */
+      setErrors({
+        ...errors,
+        [lastChanged]: newErrors[lastChanged]
+      });
+    }
+  };
 
   /* Function to send data to server to change user data */
   const handleSubmit = (e) => {
@@ -104,19 +103,19 @@ export function ProfileView(props) {
       })
       .catch(err => {
         /* Display errors from server-side validation */
-        const errorResponse =  err.response.data;
+        const errorResponse = err.response.data;
         const endOfPrefix = errorResponse.lastIndexOf(': ');
-         /* Only display relevant part of error message */
+        /* Only display relevant part of error message */
         if (endOfPrefix !== -1) {
           const message = errorResponse.substr(endOfPrefix);
           if (message.includes('username')) {
-            setErrors({username: message});
+            setErrors({ username: message });
           } else if (message.includes('email')) {
-            setErrors({email: message});
+            setErrors({ email: message });
           }
         }
       });
-  }
+  };
 
   /* Handle account deletion */
   const deleteAccount = () => {
@@ -135,7 +134,7 @@ export function ProfileView(props) {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <>
