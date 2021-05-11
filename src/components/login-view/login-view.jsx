@@ -102,7 +102,7 @@ export function LoginView(props) {
         <Form
           /* Disable standard HTML5 validation */
           noValidate
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={handleSubmit}
         >
           <Form.Group controlId="formUsername">
             <Form.Label>Username:</Form.Label>

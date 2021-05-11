@@ -37310,9 +37310,7 @@ function LoginView(props) {
   /* Disable standard HTML5 validation */
   , {
     noValidate: true,
-    onSubmit: function onSubmit(e) {
-      return handleSubmit(e);
-    }
+    onSubmit: handleSubmit
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
     controlId: "formUsername"
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Username:"), /*#__PURE__*/_react.default.createElement(_InputGroup.default, {
@@ -37556,9 +37554,7 @@ function RegisterView(props) {
   /* Disable standard HTML5 validation */
   , {
     noValidate: true,
-    onSubmit: function onSubmit(e) {
-      return handleSubmit(e);
-    }
+    onSubmit: handleSubmit
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
     controlId: "formUsername"
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Username:"), /*#__PURE__*/_react.default.createElement(_InputGroup.default, {
@@ -41500,9 +41496,7 @@ function ProfileView(props) {
   /* Disable standard HTML5 validation */
   , {
     noValidate: true,
-    onSubmit: function onSubmit(e) {
-      return handleSubmit(e);
-    }
+    onSubmit: handleSubmit
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
     controlId: "formUsername"
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Username:"), /*#__PURE__*/_react.default.createElement(_InputGroup.default, {
