@@ -41379,6 +41379,20 @@ function ProfileView(props) {
       _useState10 = _slicedToArray(_useState9, 2),
       lastChanged = _useState10[0],
       setLastChanged = _useState10[1];
+  /* Updater functions */
+
+
+  var updateForm = function updateForm(currentForm, key, value) {
+    setForm(function () {
+      return _objectSpread(_objectSpread({}, currentForm), {}, _defineProperty({}, key, value));
+    });
+  };
+
+  var updateErrors = function updateErrors(currentErrors, key, value) {
+    setErrors(function () {
+      return _objectSpread(_objectSpread({}, currentErrors), {}, _defineProperty({}, key, value));
+    });
+  };
   /* Validation cycle after each change to a field */
 
 
@@ -41386,7 +41400,7 @@ function ProfileView(props) {
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
-    setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    updateForm(form, field, value);
     /* Maintain lastChanged value to currently edited field */
 
     setLastChanged(field);
@@ -41415,10 +41429,8 @@ function ProfileView(props) {
 
   function realtimeValidation() {
     if (lastChanged) {
-      var newErrors = checkFormValidity();
-      /* Only change error state of the lastChanged field */
-
-      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
+      var newError = checkFormValidity()[lastChanged];
+      updateErrors(errors, lastChanged, newError);
     }
   }
 
@@ -41452,6 +41464,7 @@ function ProfileView(props) {
       /* Change URL to match right username */
 
       window.location.href = "/profile/".concat(localStorage.getItem('user'));
+      setUserData(res.data);
       alert('Successfully updated your data.');
     }).catch(function (err) {
       /* Display errors from server-side validation */
