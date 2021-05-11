@@ -1,6 +1,11 @@
 /* Import from packages */
 import React from 'react';
 import PropTypes from 'prop-types';
+
+/* Get Components for Routing*/
+import { Link } from 'react-router-dom';
+
+/* Get Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -43,7 +48,9 @@ export class MovieView extends React.Component {
           <Col>
             <div className="movie-director">
               <span className="label">Director: </span>
-              <span className="value">{movie.Director.Name}</span>
+              <Link to={`/directors/${movie.Director.Name}`}>
+                <Button variant="link">{movie.Director.Name}</Button>
+              </Link>
             </div>
           </Col>
         </Row>
@@ -51,13 +58,15 @@ export class MovieView extends React.Component {
           <Col>
             <div className="movie-genre">
               <span className="label">Genre: </span>
-              <span className="value">{movie.Genre.Name}</span>
+              <Link to={`/genres/${movie.Genre.Name}`}>
+                <Button variant="link">{movie.Genre.Name}</Button>
+              </Link>
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
-            <Button onClick={() => { onBackClick(null); }}>Back</Button>
+            <Button onClick={() => { onBackClick(); }}>Back</Button>
           </Col>
         </Row>
       </Col>
