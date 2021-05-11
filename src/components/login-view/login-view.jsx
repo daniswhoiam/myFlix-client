@@ -34,7 +34,7 @@ export function LoginView(props) {
       });
     }
     /* Trigger after each change to form or lastChanged state */
-  }, [lastChanged, form]);
+  }, [lastChanged, JSON.stringify(form)]);
 
   const setField = (field, value) => {
     /* Only change value of current field */

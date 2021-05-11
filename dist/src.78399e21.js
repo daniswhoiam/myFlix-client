@@ -37238,7 +37238,7 @@ function LoginView(props) {
     }
     /* Trigger after each change to form or lastChanged state */
 
-  }, [lastChanged, form]);
+  }, [lastChanged, JSON.stringify(form)]);
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
@@ -37434,7 +37434,7 @@ function RegisterView(props) {
     }
     /* Trigger after each change to form or lastChanged state */
 
-  }, [lastChanged, form]);
+  }, [lastChanged, JSON.stringify(form)]);
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
@@ -41391,7 +41391,7 @@ function ProfileView(props) {
     }
     /* Trigger after each change to form or lastChanged state */
 
-  }, [lastChanged, form]);
+  }, [lastChanged, JSON.stringify(form)]);
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
@@ -41984,7 +41984,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57884" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62666" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
