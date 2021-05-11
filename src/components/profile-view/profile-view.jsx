@@ -73,6 +73,7 @@ export function ProfileView(props) {
   /* Defined with function keyword to be able to use it in useEffect and place it down here */
   function realtimeValidation () {
     if (lastChanged) {
+      /* Get current error(s) for the currently edited field */
       const newError = checkFormValidity()[lastChanged];
       updateErrors(errors, lastChanged, newError);
     }

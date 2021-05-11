@@ -22,16 +22,31 @@ export function LoginView(props) {
   const [errors, setErrors] = useState({});
   const [lastChanged, setLastChanged] = useState('');
 
+  /* Updater functions */
+  const updateForm = (currentForm, key, value) => {
+    setForm(() => {
+      return {
+        ...currentForm,
+        [key]: value
+      }
+    })
+  };
+
+  const updateErrors = (currentErrors, key, value) => {
+    setErrors(() => {
+      return {
+        ...currentErrors,
+        [key]: value
+      }
+    })
+  };
+
   /* Validation cycle after each change to a field */
   useEffect(realtimeValidation, [lastChanged, JSON.stringify(form)]);
 
   const setField = (field, value) => {
     /* Only change value of current field */
-    setForm({
-      ...form,
-      [field]: value
-    });
-
+    updateForm(form, field, value);
     /* Maintain lastChanged value to currently edited field */
     setLastChanged(field);
   };
@@ -53,13 +68,9 @@ export function LoginView(props) {
   /* Defined with function keyword to be able to use it in useEffect and place it down here */
   function realtimeValidation () {
     if (lastChanged) {
-      const newErrors = checkFormValidity();
-
-      /* Only change error state of the lastChanged field */
-      setErrors({
-        ...errors,
-        [lastChanged]: newErrors[lastChanged]
-      });
+      /* Get current error(s) for the currently edited field */
+      const newError = checkFormValidity()[lastChanged];
+      updateErrors(errors, lastChanged, newError);
     }
   };
 

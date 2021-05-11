@@ -37226,6 +37226,20 @@ function LoginView(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       lastChanged = _useState6[0],
       setLastChanged = _useState6[1];
+  /* Updater functions */
+
+
+  var updateForm = function updateForm(currentForm, key, value) {
+    setForm(function () {
+      return _objectSpread(_objectSpread({}, currentForm), {}, _defineProperty({}, key, value));
+    });
+  };
+
+  var updateErrors = function updateErrors(currentErrors, key, value) {
+    setErrors(function () {
+      return _objectSpread(_objectSpread({}, currentErrors), {}, _defineProperty({}, key, value));
+    });
+  };
   /* Validation cycle after each change to a field */
 
 
@@ -37233,7 +37247,7 @@ function LoginView(props) {
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
-    setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    updateForm(form, field, value);
     /* Maintain lastChanged value to currently edited field */
 
     setLastChanged(field);
@@ -37258,10 +37272,9 @@ function LoginView(props) {
 
   function realtimeValidation() {
     if (lastChanged) {
-      var newErrors = checkFormValidity();
-      /* Only change error state of the lastChanged field */
-
-      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
+      /* Get current error(s) for the currently edited field */
+      var newError = checkFormValidity()[lastChanged];
+      updateErrors(errors, lastChanged, newError);
     }
   }
 
@@ -37423,6 +37436,20 @@ function RegisterView(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       lastChanged = _useState6[0],
       setLastChanged = _useState6[1];
+  /* Updater functions */
+
+
+  var updateForm = function updateForm(currentForm, key, value) {
+    setForm(function () {
+      return _objectSpread(_objectSpread({}, currentForm), {}, _defineProperty({}, key, value));
+    });
+  };
+
+  var updateErrors = function updateErrors(currentErrors, key, value) {
+    setErrors(function () {
+      return _objectSpread(_objectSpread({}, currentErrors), {}, _defineProperty({}, key, value));
+    });
+  };
   /* Validation cycle after each change to a field */
 
 
@@ -37430,7 +37457,7 @@ function RegisterView(props) {
 
   var setField = function setField(field, value) {
     /* Only change value of current field */
-    setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, field, value)));
+    updateForm(form, field, value);
     /* Maintain lastChanged value to currently edited field */
 
     setLastChanged(field);
@@ -37465,10 +37492,9 @@ function RegisterView(props) {
 
   function realtimeValidation() {
     if (lastChanged) {
-      var newErrors = checkFormValidity();
-      /* Only change error state of the lastChanged field */
-
-      setErrors(_objectSpread(_objectSpread({}, errors), {}, _defineProperty({}, lastChanged, newErrors[lastChanged])));
+      /* Get current error(s) for the currently edited field */
+      var newError = checkFormValidity()[lastChanged];
+      updateErrors(errors, lastChanged, newError);
     }
   }
 
@@ -41429,6 +41455,7 @@ function ProfileView(props) {
 
   function realtimeValidation() {
     if (lastChanged) {
+      /* Get current error(s) for the currently edited field */
       var newError = checkFormValidity()[lastChanged];
       updateErrors(errors, lastChanged, newError);
     }
@@ -41998,7 +42025,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62666" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52889" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
