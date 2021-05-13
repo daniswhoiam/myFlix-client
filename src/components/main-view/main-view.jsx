@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 /* Redux */
-import { connect } from 'redux';
+import { connect } from 'react-redux';
 
 import { setMovies } from '../../actions/actions';
 
@@ -68,7 +68,7 @@ class MainView extends React.Component {
     })
       .then(res => {
         // Assign the result to the state
-        this.props.setMovies(response.data);
+        this.props.setMovies(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -149,7 +149,7 @@ class MainView extends React.Component {
   }
 }
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
   return { movies: state.movies };
 }
 
