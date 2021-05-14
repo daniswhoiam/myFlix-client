@@ -10,10 +10,15 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
+/* Redux */
+import { connect } from 'react-redux';
+
+import { setUser } from '../../actions/actions';
+
 /* Import SCSS */
 import './movie-card.scss';
 
-export class MovieCard extends React.Component {
+class MovieCard extends React.Component {
 
   constructor() {
     super();
@@ -29,7 +34,7 @@ export class MovieCard extends React.Component {
 
   componentDidMount() {
     /* If the movie was favorited by the user, show it */
-    const favoriteMovies = JSON.parse(localStorage.getItem('userdata')).FavoriteMovies;
+    const favoriteMovies = this.props.user.FavoriteMovies;
     if (favoriteMovies) {
       const favoritedState = favoriteMovies.includes(this.props.movie._id);
       this.setState({ favorited: favoritedState });
@@ -47,7 +52,8 @@ export class MovieCard extends React.Component {
     this.handleFavoriteMovieRequest(currentState)
       .then(res => {
         /* If request was successful, update user data in localStorage and state of this movie */
-        localStorage.setItem('userdata', JSON.stringify(res.data));
+        localStorage.setItem('user', JSON.stringify(res.data));
+        this.props.setUser(res.data);
         this.setState({ favorited: !currentState });
       })
       .catch(err => {
@@ -59,7 +65,7 @@ export class MovieCard extends React.Component {
   handleFavoriteMovieRequest(currentState) {
     return currentState ?
       axios.delete(
-        `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}/movies/${this.props.movie._id}`,
+        `https://daniswhoiam-myflix.herokuapp.com/users/${this.props.user.Username}/movies/${this.props.movie._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -68,7 +74,7 @@ export class MovieCard extends React.Component {
       )
       :
       axios.patch(
-        `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}/movies/${this.props.movie._id}`,
+        `https://daniswhoiam-myflix.herokuapp.com/users/${this.props.user.Username}/movies/${this.props.movie._id}`,
         {},
         {
           headers: {
@@ -126,6 +132,10 @@ export class MovieCard extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return { user: state.user };
+}
+
 /* Ensure that props have the right form */
 MovieCard.propTypes = {
   movie: PropTypes.shape({
@@ -144,5 +154,14 @@ MovieCard.propTypes = {
     }).isRequired,
     ReleaseYear: PropTypes.string.isRequired,
     Rating: PropTypes.string
+  }).isRequired,
+  user: PropTypes.shape({
+    Username: PropTypes.string,
+    Password: PropTypes.string,
+    Email: PropTypes.string,
+    Birth: PropTypes.string,
+    FavoriteMovies: PropTypes.array
   }).isRequired
 }
+
+export default connect(mapStateToProps, { setUser })(MovieCard);

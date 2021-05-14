@@ -10,17 +10,22 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+/* Redux */
+import { connect } from 'react-redux';
+
+import { setUser } from '../../actions/actions';
+
 /* Get Own Components */
 import { DeleteAccountModal } from './delete-account-modal';
 
 /* Get corresponding SCSS file */
 import './profile-view.scss';
 
-export function ProfileView(props) {
+function ProfileView(props) {
   /* Initialize necessary state variables  */
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userdata')));
+  const [userData, setUserData] = useState(props.user);
   const [modal, setModal] = useState(false);
   const [lastChanged, setLastChanged] = useState('');
 
@@ -106,11 +111,11 @@ export function ProfileView(props) {
     )
       .then(res => {
         /* In case of a successful request, update user data in localStorage */
-        localStorage.setItem('userdata', JSON.stringify(res.data));
-        localStorage.setItem('user', res.data.Username);
+        localStorage.setItem('user', JSON.stringify(res.data));
         /* Change URL to match right username */
-        window.location.href = `/profile/${localStorage.getItem('user')}`;
+        window.location.href = `/profile/${res.data.Username}`;
         setUserData(res.data);
+        props.setUser(res.data);
         alert('Successfully updated your data.');
       })
       .catch(err => {
@@ -226,7 +231,20 @@ export function ProfileView(props) {
   );
 }
 
+const mapStateToProps = state => {
+  return { user: state.user };
+}
+
 ProfileView.propTypes = {
   onBackClick: PropTypes.func.isRequired,
-  onLoggedOut: PropTypes.func.isRequired
+  onLoggedOut: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    Username: PropTypes.string,
+    Password: PropTypes.string,
+    Email: PropTypes.string,
+    Birth: PropTypes.string,
+    FavoriteMovies: PropTypes.array
+  }).isRequired
 }
+
+export default connect(mapStateToProps, { setUser })(ProfileView);
