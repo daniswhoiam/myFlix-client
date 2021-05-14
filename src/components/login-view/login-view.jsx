@@ -12,9 +12,12 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Image from 'react-bootstrap/Image';
 
 /* Get corresponding SCSS file */
 import './login-view.scss';
+
+import logo from '../../assets/img/full_logo.png';
 
 export function LoginView(props) {
   /* Initialize necessary state variables  */
@@ -108,46 +111,54 @@ export function LoginView(props) {
   };
 
   return (
-    <Row>
-      <Col className="form-holder">
-        <Form
-          /* Disable standard HTML5 validation */
-          noValidate
-          onSubmit={handleSubmit}
-        >
-          <Form.Group controlId="formUsername">
-            <Form.Label>Username:</Form.Label>
-            <InputGroup hasValidation>
-              <Form.Control
-                type="text"
-                onChange={e => setField('username', e.target.value)}
-                isInvalid={!!errors.username}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.username}
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
-          <Form.Group controlId="formPassword">
-            <Form.Label>Password:</Form.Label>
-            <InputGroup hasValidation>
-              <Form.Control
-                type="password"
-                onChange={e => setField('password', e.target.value)}
-                isInvalid={!!errors.password}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.password}
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
-          <Button variant="primary" type="submit">Submit</Button>
-        </Form>
-        <Link to="/register">
-          <Button variant="outline-secondary" >No account yet? Click here to register</Button>
-        </Link>
-      </Col>
-    </Row>
+    <>
+      <Row className="image-row">
+        <Image src={logo} className="image"/>
+        <h1>
+          Your personal movie database!
+        </h1>
+      </Row>
+      <Row>
+        <Col className="form-holder">
+          <Form
+            /* Disable standard HTML5 validation */
+            noValidate
+            onSubmit={handleSubmit}
+          >
+            <Form.Group controlId="formUsername">
+              <Form.Label>Username:</Form.Label>
+              <InputGroup hasValidation>
+                <Form.Control
+                  type="text"
+                  onChange={e => setField('username', e.target.value)}
+                  isInvalid={!!errors.username}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.username}
+                </Form.Control.Feedback>
+              </InputGroup>
+            </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password:</Form.Label>
+              <InputGroup hasValidation>
+                <Form.Control
+                  type="password"
+                  onChange={e => setField('password', e.target.value)}
+                  isInvalid={!!errors.password}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
+              </InputGroup>
+            </Form.Group>
+            <Button variant="primary" type="submit">Log in</Button>
+          </Form>
+          <Link to="/register">
+            <Button variant="outline-secondary" >No account yet? Click here to register</Button>
+          </Link>
+        </Col>
+      </Row>
+    </>
   );
 }
 

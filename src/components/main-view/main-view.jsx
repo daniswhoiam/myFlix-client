@@ -84,8 +84,8 @@ class MainView extends React.Component {
     </Row>;
 
     return (
-      <Router>
-        <Row className="main-view justify-content-md-center">
+      <Router className="main-view">
+        <Row className="justify-content-center">
           <Route exact path="/" render={() => {
             if (!user.Username) return login;
             /* Display empty list while data is fetched from database */

@@ -4,7 +4,7 @@ $tertiary-color: #850781;
 
 $primary-font: 'Roboto';
 
-body {
+body, .main-view {
   min-height: 100vh;
   font-family: $primary-font;
 }
