@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 /* Get Components for Routing*/
-import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 /* Get Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 
 /* Redux */
 import { connect } from 'react-redux';
@@ -24,6 +23,7 @@ import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import ProfileView from '../profile-view/profile-view';
 import MoviesList from '../movies-list/movies-list';
+import { NavbarHeader } from '../navbar-header/navbar-header';
 
 /* Get corresponding SCSS file */
 import './main-view.scss';
@@ -74,18 +74,11 @@ class MainView extends React.Component {
 
     /* Parts to be reused in multiple views */
     const login = <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-    const logoutButton = <Row>
-      <Col>
-        <Button variant="outline-primary" onClick={() => { this.onLoggedOut() }}>Logout</Button>
-        <Link to={`/profile/${user.Username}`}>
-          <Button variant="link">My Profile</Button>
-        </Link>
-      </Col>
-    </Row>;
 
     return (
       <Router className="main-view">
-        <Row className="justify-content-center">
+        <NavbarHeader user={user} onLoggedOut={() => this.onLoggedOut()} />
+        <Row className="justify-content-center main-row">
           <Route exact path="/" render={() => {
             if (!user.Username) return login;
             /* Display empty list while data is fetched from database */
@@ -126,8 +119,6 @@ class MainView extends React.Component {
             </Col>
           }} />
         </Row>
-        {/* Only show logoutButton if user is logged in */}
-        {user.Username && logoutButton}
       </Router>
     );
   }

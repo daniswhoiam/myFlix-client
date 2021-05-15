@@ -8,3 +8,13 @@ body, .main-view {
   min-height: 100vh;
   font-family: $primary-font;
 }
+
+.container {
+  max-width: unset;
+  padding: 0;
+}
+
+.row {
+  margin-right: unset;
+  margin-left: unset;
+}
