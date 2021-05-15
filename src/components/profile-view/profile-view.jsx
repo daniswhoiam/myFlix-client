@@ -216,13 +216,11 @@ function ProfileView(props) {
         </Col>
       </Row>
       <Row>
-        <Col>
-          <Button variant="outline-primary" onClick={() => setModal(true)}>Delete your account</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        <Col className="back-col">
           <Button onClick={() => { props.onBackClick(); }}>Back</Button>
+        </Col>
+        <Col className="delete-col" >
+          <Button variant="outline-primary" onClick={() => setModal(true)}>Delete your account</Button>
         </Col>
       </Row>
       {/* If user wants to delete account, ask again to make sure */}

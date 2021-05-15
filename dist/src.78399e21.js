@@ -43928,16 +43928,20 @@ function ProfileView(props) {
     defaultValue: userData.Birth.substr(0, 10)
   })), /*#__PURE__*/_react.default.createElement(_Button.default, {
     type: "submit"
-  }, "Submit")))), /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
+  }, "Submit")))), /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
+    className: "back-col"
+  }, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    onClick: function onClick() {
+      props.onBackClick();
+    }
+  }, "Back")), /*#__PURE__*/_react.default.createElement(_Col.default, {
+    className: "delete-col"
+  }, /*#__PURE__*/_react.default.createElement(_Button.default, {
     variant: "outline-primary",
     onClick: function onClick() {
       return setModal(true);
     }
-  }, "Delete your account"))), /*#__PURE__*/_react.default.createElement(_Row.default, null, /*#__PURE__*/_react.default.createElement(_Col.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
-    onClick: function onClick() {
-      props.onBackClick();
-    }
-  }, "Back"))), modal && /*#__PURE__*/_react.default.createElement(_deleteAccountModal.DeleteAccountModal, {
+  }, "Delete your account"))), modal && /*#__PURE__*/_react.default.createElement(_deleteAccountModal.DeleteAccountModal, {
     closeModal: function closeModal() {
       return setModal(false);
     },

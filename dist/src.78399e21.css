@@ -9979,6 +9979,15 @@ Button[type=submit] {
   width: 100%;
   margin: 20px auto;
 }
+.back-col {
+  flex-grow: 0 !important;
+}
+
+.delete-col {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
 .btn-link {
   padding-left: 0;
 }
