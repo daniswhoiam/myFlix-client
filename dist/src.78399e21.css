@@ -9988,6 +9988,12 @@ Button[type=submit] {
   flex-direction: row;
   justify-content: flex-end;
 }
+.bi-search {
+  position: absolute;
+  right: 25px;
+  top: 12px;
+  color: grey;
+}
 .btn-link {
   padding-left: 0;
 }
@@ -10034,6 +10040,14 @@ Button[type=submit] {
 
 .bi-star-fill {
   color: #ffd700;
+}
+.jumbotron {
+  background-color: white !important;
+}
+
+.jumbotron h2 {
+  text-align: center;
+  margin-top: 20px;
 }
 .navbar {
   width: 100%;
