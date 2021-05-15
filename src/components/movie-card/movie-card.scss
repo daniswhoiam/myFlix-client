@@ -6,6 +6,32 @@
   min-height: 300px;
 }
 
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.card-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0;
+}
+
+.expanded {
+  -webkit-line-clamp: unset;
+}
+
+.read-btn {
+  border: unset!important;
+  padding: 6px 12px 6px 0!important;
+}
+
 .movie-view-link {
   position: absolute;
   right: 10px;

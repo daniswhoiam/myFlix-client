@@ -96,17 +96,19 @@ class MovieCard extends React.Component {
           {/* Handle how much text is being shown */}
           {
             readMore ?
-              <Card.Text>
+              <>
+                <Card.Text className="expanded">
                 {movie.Description}
-                <br />
-                <Button type="button" variant="link" onClick={() => this.setReadMore(false)}>Read Less &lt;&lt;</Button>
-              </Card.Text>
+                </Card.Text>
+                <Button className="read-btn" type="button" variant="link" onClick={() => this.setReadMore(false)}>Read Less &lt;&lt;</Button>
+              </>
               :
-              <Card.Text>
+              <>
+                <Card.Text>
                 {movie.Description.substr(0, maxTextLength).concat('...')}
-                <br />
-                <Button type="button" variant="link" onClick={() => this.setReadMore(true)}>Read more &gt;&gt;</Button>
-              </Card.Text>
+                </Card.Text>
+                <Button className="read-btn" type="button" variant="link" onClick={() => this.setReadMore(true)}>Read more &gt;&gt;</Button>
+              </>
           }
           <Link to={`/movies/${movie._id}`}>
             <Button className="movie-view-link" variant="primary">Open</Button>

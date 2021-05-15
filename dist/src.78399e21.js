@@ -44304,13 +44304,17 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
       return /*#__PURE__*/_react.default.createElement(_Card.default, null, /*#__PURE__*/_react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.ImagePath
-      }), /*#__PURE__*/_react.default.createElement(_Card.default.Body, null, /*#__PURE__*/_react.default.createElement(_Card.default.Title, null, movie.Title), readMore ? /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+      }), /*#__PURE__*/_react.default.createElement(_Card.default.Body, null, /*#__PURE__*/_react.default.createElement(_Card.default.Title, null, movie.Title), readMore ? /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Card.default.Text, {
+        className: "expanded"
+      }, movie.Description), /*#__PURE__*/_react.default.createElement(_Button.default, {
+        className: "read-btn",
         type: "button",
         variant: "link",
         onClick: function onClick() {
           return _this3.setReadMore(false);
         }
-      }, "Read Less <<")) : /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description.substr(0, maxTextLength).concat('...'), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+      }, "Read Less <<")) : /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Card.default.Text, null, movie.Description.substr(0, maxTextLength).concat('...')), /*#__PURE__*/_react.default.createElement(_Button.default, {
+        className: "read-btn",
         type: "button",
         variant: "link",
         onClick: function onClick() {
