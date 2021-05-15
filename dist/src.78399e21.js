@@ -33383,12 +33383,27 @@ var _redux = require("redux");
 var _actions = require("../actions/actions");
 
 function visibilityFilter() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    term: '',
+    favoritesOnly: false
+  };
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
     case _actions.SET_FILTER:
-      return action.value;
+      if ('term' in action.value) {
+        var favoritesOnly = state.favoritesOnly;
+        return {
+          term: action.value.term,
+          favoritesOnly: favoritesOnly
+        };
+      } else if ('favoritesOnly' in action.value) {
+        var term = state.term;
+        return {
+          term: term,
+          favoritesOnly: action.value.favoritesOnly
+        };
+      }
 
     default:
       return state;
@@ -44045,11 +44060,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /* Get corresponding SCSS file */
 function VisibilityFilterInput(props) {
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "filter-form"
+  }, /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
     onChange: function onChange(e) {
-      return props.setFilter(e.target.value);
+      return props.setFilter({
+        term: e.target.value
+      });
     },
-    value: props.visibilityFilter,
+    value: props.visibilityFilter.term,
     placeholder: "Search for a movie..."
   }), /*#__PURE__*/_react.default.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
@@ -44060,7 +44079,16 @@ function VisibilityFilterInput(props) {
     viewBox: "0 0 16 16"
   }, /*#__PURE__*/_react.default.createElement("path", {
     d: "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-  })));
+  })), /*#__PURE__*/_react.default.createElement(_Form.default.Check, {
+    type: "switch",
+    id: "switch",
+    label: "Show my favorite movies only",
+    onChange: function onChange(e) {
+      return props.setFilter({
+        favoritesOnly: e.target.checked
+      });
+    }
+  }));
 }
 
 var _default = (0, _reactRedux.connect)(null, {
@@ -44466,7 +44494,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
@@ -44484,6 +44512,10 @@ require("./movies-list.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 /* Import from packages */
 
 /* Get Bootstrap Components */
@@ -44498,30 +44530,40 @@ function MoviesList(props) {
       visibilityFilter = props.visibilityFilter;
   var filteredMovies = movies;
 
-  if (visibilityFilter !== '') {
-    filteredMovies = movies.filter(function (m) {
-      return m.Title.toLowerCase().includes(visibilityFilter.toLowerCase());
-    });
-  }
-
-  if (!movies) return /*#__PURE__*/_react.default.createElement("div", {
-    className: "main-view"
-  });
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Col.default, {
+  var searchBar = /*#__PURE__*/_react.default.createElement(_Col.default, {
     md: 12,
     style: {
       margin: '1em'
     }
   }, /*#__PURE__*/_react.default.createElement(_visibilityFilterInput.default, {
     visibilityFilter: visibilityFilter
-  })), filteredMovies.length > 0 ? filteredMovies.map(function (movie) {
+  }));
+
+  if (visibilityFilter.term && visibilityFilter.term !== '') {
+    filteredMovies = movies.filter(function (m) {
+      return m.Title.toLowerCase().includes(visibilityFilter.term.toLowerCase());
+    });
+  }
+
+  if (visibilityFilter.favoritesOnly) {
+    var relevantMovieArray = filteredMovies || movies;
+    filteredMovies = relevantMovieArray.filter(function (m) {
+      return props.user.FavoriteMovies.includes(m._id);
+    });
+  }
+
+  if (!movies) return /*#__PURE__*/_react.default.createElement("div", {
+    className: "main-view"
+  });
+  if (filteredMovies.length === 0) return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, searchBar, /*#__PURE__*/_react.default.createElement(_Jumbotron.default, null, /*#__PURE__*/_react.default.createElement("h1", null, "Unfortunately, there is no movie that fits your search term."), /*#__PURE__*/_react.default.createElement("h2", null, "Do you want to search for a different movie?")));
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, searchBar, filteredMovies.map(function (movie) {
     return /*#__PURE__*/_react.default.createElement(_Col.default, {
-      md: 3,
+      md: filteredMovies.length > 2 ? 3 : 12 / filteredMovies.length,
       key: movie._id
     }, /*#__PURE__*/_react.default.createElement(_movieCard.default, {
       movie: movie
     }));
-  }) : /*#__PURE__*/_react.default.createElement(_Jumbotron.default, null, /*#__PURE__*/_react.default.createElement("h1", null, "Unfortunately, there is no movie that fits your search term."), /*#__PURE__*/_react.default.createElement("h2", null, "Do you want to search for a different movie?")));
+  }));
 }
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -44532,8 +44574,7 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 MoviesList.propTypes = {
-  movies: _propTypes.default.array.isRequired,
-  visibilityFilter: _propTypes.default.string.isRequired
+  movies: _propTypes.default.array.isRequired
 };
 
 var _default = (0, _reactRedux.connect)(mapStateToProps)(MoviesList);
@@ -46296,7 +46337,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
 
           if (movies.length === 0) return /*#__PURE__*/_react.default.createElement("div", null);
           return /*#__PURE__*/_react.default.createElement(_moviesList.default, {
-            movies: movies
+            movies: movies,
+            user: user
           });
         }
       }), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {

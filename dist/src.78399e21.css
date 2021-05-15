@@ -9994,8 +9994,21 @@ Button[type=submit] {
   top: 12px;
   color: grey;
 }
+
+#switch, .custom-control-label {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.custom-control-label {
+  color: grey;
+}
 .btn-link {
   padding-left: 0;
+}
+
+.card {
+  max-width: 450px;
 }
 
 .card-body {
@@ -19999,6 +20012,7 @@ h3 {
 
 .main-row {
   margin-top: 100px;
+  min-height: calc(100vh - 300px);
 }
 
 .footer-row {

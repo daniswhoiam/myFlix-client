@@ -84,7 +84,7 @@ class MainView extends React.Component {
             /* Display empty list while data is fetched from database */
             if (movies.length === 0) return <div />;
 
-            return <MoviesList movies={movies}/>;
+            return <MoviesList movies={movies} user={user} />;
           }} />
           <Route path="/movies/:movieId" render={({ match, history }) => {
             if (!user.Username) return login;

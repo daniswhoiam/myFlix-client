@@ -1,5 +1,5 @@
 /* Import from packages */
-import React from 'react';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 /* Get Bootstrap Components */
@@ -20,23 +20,24 @@ function MoviesList(props) {
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;
 
-  if (visibilityFilter !== '') {
-    filteredMovies = movies.filter(m => m.Title.toLowerCase().includes(visibilityFilter.toLowerCase()));
+  let searchBar = <Col md={12} style={{margin: '1em'}}>
+    <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+  </Col>;
+
+  if (visibilityFilter.term && visibilityFilter.term !== '') {
+    filteredMovies = movies.filter(m => m.Title.toLowerCase().includes(visibilityFilter.term.toLowerCase()));
+  }
+
+  if (visibilityFilter.favoritesOnly) {
+    let relevantMovieArray = filteredMovies || movies;
+    filteredMovies = relevantMovieArray.filter(m => props.user.FavoriteMovies.includes(m._id));
   }
 
   if (!movies) return <div className="main-view"/>;
 
-  return <>
-    <Col md={12} style={{margin: '1em'}}>
-      <VisibilityFilterInput visibilityFilter={visibilityFilter} />
-    </Col>
-    {filteredMovies.length > 0 ? 
-      filteredMovies.map(movie => (
-        <Col md={3} key={movie._id}>
-          <MovieCard movie={movie} />
-        </Col>
-      ))
-      :
+  if (filteredMovies.length === 0) return(
+    <>
+      {searchBar}
       <Jumbotron>
         <h1>
           Unfortunately, there is no movie that fits your search term.
@@ -45,6 +46,17 @@ function MoviesList(props) {
           Do you want to search for a different movie?
         </h2>
       </Jumbotron>
+    </>
+  );
+
+  return <>
+    {searchBar}
+    {
+      filteredMovies.map(movie => (
+        <Col md={filteredMovies.length > 2 ? 3 : 12/filteredMovies.length} key={movie._id}>
+          <MovieCard movie={movie} />
+        </Col>
+      ))
     }
   </>;
 }
@@ -56,7 +68,7 @@ const mapStateToProps = state => {
 
 MoviesList.propTypes = {
   movies: PropTypes.array.isRequired,
-  visibilityFilter: PropTypes.string.isRequired
+
 }
 
 export default connect(mapStateToProps)(MoviesList);
