@@ -12,31 +12,10 @@
   bottom: 10px;
 }
 
-svg {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  height: 25px;
-  width: 25px;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  polygon {
-    stroke: black;
-
-  }
+.bi {
+  cursor: pointer;
 }
 
-.starOff {
-  polygon {
-    fill: white;
-  }
-}
-
-.starOn {
-  polygon {
-    fill: yellow;
-  }
+.bi-star-fill {
+  color: #ffd700;
 }

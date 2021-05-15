@@ -115,15 +115,11 @@ class MovieCard extends React.Component {
           {
             favorited ?
               <div className="starOn" onClick={() => this.updateFavoriteMovieData(true)}>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                  <polygon points="12,3 6,21 21,9 3,9 18,21" />
-                </svg>
+                <i className="bi bi-star-fill"></i>
               </div>
               :
               <div className="starOff" onClick={() => this.updateFavoriteMovieData(false)}>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                  <polygon points="12,3 6,21 21,9 3,9 18,21" />
-                </svg>
+                <i className="bi bi-star"></i>
               </div>
           }
         </Card.Body>

@@ -9993,26 +9993,12 @@ Button[type=submit] {
   bottom: 10px;
 }
 
-svg {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  height: 25px;
-  width: 25px;
-}
-svg:hover {
+.bi {
   cursor: pointer;
 }
-svg polygon {
-  stroke: black;
-}
 
-.starOff polygon {
-  fill: white;
-}
-
-.starOn polygon {
-  fill: yellow;
+.bi-star-fill {
+  color: #ffd700;
 }
 .navbar {
   width: 100%;

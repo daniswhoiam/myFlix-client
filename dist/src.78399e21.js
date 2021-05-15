@@ -44326,22 +44326,16 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
         onClick: function onClick() {
           return _this3.updateFavoriteMovieData(true);
         }
-      }, /*#__PURE__*/_react.default.createElement("svg", {
-        xmlns: "http://www.w3.org/2000/svg",
-        version: "1.1"
-      }, /*#__PURE__*/_react.default.createElement("polygon", {
-        points: "12,3 6,21 21,9 3,9 18,21"
-      }))) : /*#__PURE__*/_react.default.createElement("div", {
+      }, /*#__PURE__*/_react.default.createElement("i", {
+        className: "bi bi-star-fill"
+      })) : /*#__PURE__*/_react.default.createElement("div", {
         className: "starOff",
         onClick: function onClick() {
           return _this3.updateFavoriteMovieData(false);
         }
-      }, /*#__PURE__*/_react.default.createElement("svg", {
-        xmlns: "http://www.w3.org/2000/svg",
-        version: "1.1"
-      }, /*#__PURE__*/_react.default.createElement("polygon", {
-        points: "12,3 6,21 21,9 3,9 18,21"
-      })))));
+      }, /*#__PURE__*/_react.default.createElement("i", {
+        className: "bi bi-star"
+      }))));
     }
   }]);
 
@@ -46441,7 +46435,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49939" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61570" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
