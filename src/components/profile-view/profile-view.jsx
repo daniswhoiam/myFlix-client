@@ -11,9 +11,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 /* Redux */
-import { connect } from 'react-redux';
-
-import { setUser } from '../../actions/actions';
+import { useSelector } from 'react-redux';
 
 /* Get Own Components */
 import { DeleteAccountModal } from './delete-account-modal';
@@ -25,9 +23,10 @@ function ProfileView(props) {
   /* Initialize necessary state variables  */
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  const [userData, setUserData] = useState(props.user);
   const [modal, setModal] = useState(false);
   const [lastChanged, setLastChanged] = useState('');
+  /* Make state available to component */
+  const user = useSelector(state => state.user);
 
   /* Updater functions */
   const updateForm = (currentForm, key, value) => {
@@ -76,7 +75,7 @@ function ProfileView(props) {
   };
 
   /* Defined with function keyword to be able to use it in useEffect and place it down here */
-  function realtimeValidation () {
+  function realtimeValidation() {
     if (lastChanged) {
       /* Get current error(s) for the currently edited field */
       const newError = checkFormValidity()[lastChanged];
@@ -96,12 +95,12 @@ function ProfileView(props) {
     }
 
     axios.put(
-      `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}`,
+      `https://daniswhoiam-myflix.herokuapp.com/users/${user.Username}`,
       {
         /* If no input, take standard values -> due to how API is designed */
-        Username: form.username || userData.Username,
+        Username: form.username || user.Username,
         Password: form.password,
-        Email: form.email || userData.Email
+        Email: form.email || user.Email
       },
       {
         headers: {
@@ -110,18 +109,22 @@ function ProfileView(props) {
       }
     )
       .then(res => {
-        /* In case of a successful request, update user data in localStorage */
+        /* Update localStorage because it is the source for maintaining state (see MainView) */
         localStorage.setItem('user', JSON.stringify(res.data));
         /* Change URL to match right username */
         window.location.href = `/profile/${res.data.Username}`;
-        setUserData(res.data);
-        props.setUser(res.data);
         alert('Successfully updated your data.');
       })
       .catch(err => {
+        if (!err.response) {
+          console.log(err);
+          return;
+        }
+
         /* Display errors from server-side validation */
         const errorResponse = err.response.data;
         const endOfPrefix = errorResponse.lastIndexOf(': ');
+
         /* Only display relevant part of error message */
         if (endOfPrefix !== -1) {
           const message = errorResponse.substr(endOfPrefix);
@@ -137,7 +140,7 @@ function ProfileView(props) {
   /* Handle account deletion */
   const deleteAccount = () => {
     axios.delete(
-      `https://daniswhoiam-myflix.herokuapp.com/users/${localStorage.getItem('user')}`,
+      `https://daniswhoiam-myflix.herokuapp.com/users/${user.Username}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -162,12 +165,13 @@ function ProfileView(props) {
             noValidate
             onSubmit={handleSubmit}
           >
+            {/* Username handling */}
             <Form.Group controlId="formUsername">
               <Form.Label>Username:</Form.Label>
               <InputGroup hasValidation>
                 <Form.Control
                   type="text"
-                  placeholder={userData.Username}
+                  placeholder={user.Username}
                   onChange={e => setField('username', e.target.value)}
                   isInvalid={!!errors.username}
                 />
@@ -177,6 +181,8 @@ function ProfileView(props) {
               </InputGroup>
               <Form.Text muted>Here you can see your current username. To change it, type in a new one.</Form.Text>
             </Form.Group>
+
+            {/* Password handling */}
             <Form.Group controlId="formPassword">
               <Form.Label>Password:</Form.Label>
               <InputGroup hasValidation>
@@ -192,12 +198,14 @@ function ProfileView(props) {
               </InputGroup>
               <Form.Text muted>Here, please type either your current password or a new one if you want to change your current one. (required)</Form.Text>
             </Form.Group>
+
+            {/* Email Handling */}
             <Form.Group controlId="formEmail">
               <Form.Label>E-Mail Address:</Form.Label>
               <InputGroup hasValidation>
                 <Form.Control
                   type="email"
-                  placeholder={userData.Email}
+                  placeholder={user.Email}
                   onChange={e => setField('email', e.target.value)}
                   isInvalid={!!errors.email}
                 />
@@ -207,42 +215,41 @@ function ProfileView(props) {
               </InputGroup>
               <Form.Text muted>Here you can see your current e-mail address. To change it, type in a new one.</Form.Text>
             </Form.Group>
+
+            {/* Date of birth handling */}
             <Form.Group>
               <Form.Label>Date of Birth: </Form.Label>
-              <Form.Control plaintext readOnly defaultValue={userData.Birth.substr(0, 10)} />
+              <Form.Control plaintext readOnly defaultValue={user.Birth.substr(0, 10)} />
             </Form.Group>
-            <Button type="submit">Submit</Button>
+
+            {/* Submit button */}
+            <Button type="submit">Update profile</Button>
           </Form>
         </Col>
       </Row>
       <Row>
+        {/* Go to previous view */}
         <Col className="back-col">
           <Button onClick={() => { props.onBackClick(); }}>Back</Button>
         </Col>
+
+        {/* If user wants to delete account, ask again to make sure */}
         <Col className="delete-col" >
           <Button variant="outline-primary" onClick={() => setModal(true)}>Delete your account</Button>
         </Col>
       </Row>
-      {/* If user wants to delete account, ask again to make sure */}
+
+      {/* Display modal if it is triggered */}
       {modal && <DeleteAccountModal closeModal={() => setModal(false)} deleteAccount={deleteAccount} />}
     </>
   );
 }
 
-const mapStateToProps = state => {
-  return { user: state.user };
-}
-
+/* Ensure that props have the right form */
 ProfileView.propTypes = {
   onBackClick: PropTypes.func.isRequired,
-  onLoggedOut: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    Username: PropTypes.string,
-    Password: PropTypes.string,
-    Email: PropTypes.string,
-    Birth: PropTypes.string,
-    FavoriteMovies: PropTypes.array
-  }).isRequired
+  onLoggedOut: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, { setUser })(ProfileView);
+/* Connect component with store and export */
+export default ProfileView;

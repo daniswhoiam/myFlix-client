@@ -25,7 +25,7 @@ class MovieCard extends React.Component {
     this.state = {
       /* Make whole text readable if necessary */
       readMore: false,
-      /* Make cards have the same size */
+      /* Make cards have similar size */
       maxTextLength: 100,
       /* Show whether movie is favorited */
       favorited: false
@@ -41,19 +41,21 @@ class MovieCard extends React.Component {
     }
   }
 
+  /* Change readMore state */
   setReadMore(bool) {
     this.setState({
       readMore: bool
     });
   }
 
-  /* Enable user to easily (un)favorite a movie -> toggle depending on current state*/ 
+  /* Enable user to easily (un)favorite a movie -> toggle depending on current state*/
   updateFavoriteMovieData(currentState) {
     this.handleFavoriteMovieRequest(currentState)
       .then(res => {
-        /* If request was successful, update user data in localStorage and state of this movie */
-        localStorage.setItem('user', JSON.stringify(res.data));
+        /* If request was successful, update user state and state of this movie */
         this.props.setUser(res.data);
+        /* Update localStorage because it is the source for maintaining state (see MainView) */
+        localStorage.setItem('user', JSON.stringify(this.props.user));
         this.setState({ favorited: !currentState });
       })
       .catch(err => {
@@ -98,14 +100,14 @@ class MovieCard extends React.Component {
             readMore ?
               <>
                 <Card.Text className="expanded">
-                {movie.Description}
+                  {movie.Description}
                 </Card.Text>
                 <Button className="read-btn" type="button" variant="link" onClick={() => this.setReadMore(false)}>Read Less &lt;&lt;</Button>
               </>
               :
               <>
                 <Card.Text>
-                {movie.Description.substr(0, maxTextLength).concat('...')}
+                  {movie.Description.substr(0, maxTextLength).concat('...')}
                 </Card.Text>
                 <Button className="read-btn" type="button" variant="link" onClick={() => this.setReadMore(true)}>Read more &gt;&gt;</Button>
               </>
@@ -130,9 +132,19 @@ class MovieCard extends React.Component {
   }
 }
 
+/* Provide state to component as a prop */
 const mapStateToProps = state => {
   return { user: state.user };
-}
+};
+
+/* Enable reliable update of state in async functions */
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: user => {
+      dispatch(setUser(user));
+    }
+  };
+};
 
 /* Ensure that props have the right form */
 MovieCard.propTypes = {
@@ -159,7 +171,9 @@ MovieCard.propTypes = {
     Email: PropTypes.string,
     Birth: PropTypes.string,
     FavoriteMovies: PropTypes.array
-  }).isRequired
+  }).isRequired,
+  setUser: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, { setUser })(MovieCard);
+/* Connect component with store and export */
+export default connect(mapStateToProps, mapDispatchToProps)(MovieCard);

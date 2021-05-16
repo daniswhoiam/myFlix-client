@@ -17,6 +17,7 @@ import Image from 'react-bootstrap/Image';
 /* Get corresponding SCSS file */
 import './login-view.scss';
 
+/* Get Assets */
 import logo from '../../assets/img/full_logo.png';
 
 export function LoginView(props) {
@@ -69,7 +70,7 @@ export function LoginView(props) {
   };
 
   /* Defined with function keyword to be able to use it in useEffect and place it down here */
-  function realtimeValidation () {
+  function realtimeValidation() {
     if (lastChanged) {
       /* Get current error(s) for the currently edited field */
       const newError = checkFormValidity()[lastChanged];
@@ -96,16 +97,15 @@ export function LoginView(props) {
     })
       .then(res => {
         /* Log-in if request was successful */
-        const data = res.data;
-        props.onLoggedIn(data);
+        props.onLoggedIn(res.data);
       })
       .catch(err => {
         /* Display errors from server-side validation */
         const errorMessage = err.response.data.info;
         if (errorMessage.field === 'username') {
-          setErrors({username: errorMessage.message});
+          setErrors({ username: errorMessage.message });
         } else if (errorMessage.field === 'password') {
-          setErrors({password: errorMessage.message});
+          setErrors({ password: errorMessage.message });
         }
       });
   };
@@ -113,7 +113,7 @@ export function LoginView(props) {
   return (
     <>
       <Row className="image-row">
-        <Image src={logo} className="image"/>
+        <Image src={logo} className="image" />
         <h1>
           Your personal movie database!
         </h1>
