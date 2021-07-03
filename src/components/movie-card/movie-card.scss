@@ -2,8 +2,38 @@
   padding-left: 0;
 }
 
+.card {
+  max-width: 450px;
+}
+
 .card-body {
   min-height: 300px;
+}
+
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.card-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0;
+}
+
+.expanded {
+  -webkit-line-clamp: unset;
+}
+
+.read-btn {
+  border: unset!important;
+  padding: 6px 12px 6px 0!important;
 }
 
 .movie-view-link {
@@ -12,31 +42,10 @@
   bottom: 10px;
 }
 
-svg {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  height: 25px;
-  width: 25px;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  polygon {
-    stroke: black;
-
-  }
+.bi {
+  cursor: pointer;
 }
 
-.starOff {
-  polygon {
-    fill: white;
-  }
-}
-
-.starOn {
-  polygon {
-    fill: yellow;
-  }
+.bi-star-fill {
+  color: #ffd700;
 }

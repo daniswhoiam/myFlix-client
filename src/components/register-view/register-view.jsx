@@ -74,7 +74,7 @@ export function RegisterView(props) {
   };
 
   /* Defined with function keyword to be able to use it in useEffect and place it down here */
-  function realtimeValidation () {
+  function realtimeValidation() {
     if (lastChanged) {
       /* Get current error(s) for the currently edited field */
       const newError = checkFormValidity()[lastChanged];
@@ -101,16 +101,15 @@ export function RegisterView(props) {
       Birth: form.birth
     })
       .then(res => {
-        /* const data = res.data;
-        window.open('/', '_self'); */
-
         /* Log-in if request was successful */
         loginAfterRegister(form.username, form.password);
       })
       .catch(err => {
         /* Display errors from server-side validation */
         const errorResponse = err.response.data;
+        /* Cut off unneccesary information provided by the server */
         const endOfPrefix = errorResponse.lastIndexOf(': ');
+
         /* Only display relevant part of error message */
         if (endOfPrefix !== -1) {
           const message = errorResponse.substr(endOfPrefix);
@@ -132,8 +131,7 @@ export function RegisterView(props) {
     })
       .then(res => {
         /* Log-in if request was successful */
-        const data = res.data;
-        props.onLoggedIn(data);
+        props.onLoggedIn(res.data);
       })
       .catch(err => {
         /* Display errors from server-side validation */
@@ -154,6 +152,7 @@ export function RegisterView(props) {
           noValidate
           onSubmit={handleSubmit}
         >
+          {/* Username handling */}
           <Form.Group controlId="formUsername">
             <Form.Label>Username:</Form.Label>
             <InputGroup hasValidation>
@@ -168,6 +167,8 @@ export function RegisterView(props) {
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
+
+          {/* Password handling */}
           <Form.Group controlId="formPassword">
             <Form.Label>Password:</Form.Label>
             <InputGroup hasValidation>
@@ -182,6 +183,8 @@ export function RegisterView(props) {
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
+
+          {/* Email address handling */}
           <Form.Group>
             <Form.Label>E-Mail Address:</Form.Label>
             <InputGroup hasValidation>
@@ -196,6 +199,8 @@ export function RegisterView(props) {
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
+
+          {/* Date of birth handling */}
           <Form.Group>
             <Form.Label>Date of Birth:</Form.Label>
             <InputGroup hasValidation>
@@ -210,8 +215,12 @@ export function RegisterView(props) {
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
-          <Button type="submit">Submit</Button>
+
+          {/* Submit button */}
+          <Button type="submit">Register</Button>
         </Form>
+
+        {/* Go back to log in view */}
         <Link to={"/"}>
           <Button variant="outline-secondary">Back to Log-In</Button>
         </Link>

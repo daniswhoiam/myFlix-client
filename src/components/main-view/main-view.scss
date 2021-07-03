@@ -1,7 +1,42 @@
+@use "sass:map";
+@import "../../scss/custom.scss";
+
 .app-container, .container {
   min-height: inherit;
 }
 
 .col-md-3 {
   margin-bottom: 50px;
+}
+
+.main-row {
+  margin-top: 100px;
+  min-height: calc(100vh - 300px);
+}
+
+.footer-row {
+  margin-bottom: 20px!important;
+}
+
+.footer-text {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.bi-suit-heart-fill {
+  color: map.get($theme-colors, "primary");
+  cursor: unset;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons svg {
+  margin: 0 10px;
+}
+
+.bi-github {
+  font-size: 22px;
 }

@@ -1,0 +1,9 @@
+.back-col {
+  flex-grow: 0!important;
+}
+
+.delete-col {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
